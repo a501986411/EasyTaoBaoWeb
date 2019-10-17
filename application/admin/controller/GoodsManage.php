@@ -33,6 +33,9 @@ class GoodsManage extends App
     {
         if(Request::instance()->isPost()){
             $data = input('post.');
+            if(intval($data['own_goods_id']) == intval($data['other_goods_id'])){
+                return ['success'=>false,'msg'=>'ID不能相同'];
+            }
             $data['uid'] = isset($data['uid']) ? $data['uid'] : $this->userInfo['id'];
             $logic = new GoodsManageLogic(new GoodsRelation());
             $result = $logic->saveLogic($data);
