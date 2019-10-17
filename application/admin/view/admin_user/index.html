@@ -1,0 +1,133 @@
+<div id="service_table_btn">
+    <button type="button" class="btn btn-success"  id="add_btn" >新增</button>
+    <button type="button" class="btn btn-warning is-use" lab="1">启用</button>
+    <button type="button" class="btn btn-danger is-use" lab="0">停用</button>
+    <button type="button" class="btn btn-info" id="pwd_reset">重置密码</button>
+</div>
+<div class="table-responsive">
+    <table id="table">
+    </table>
+</div>
+{include file='admin_user/form'/}
+<script>
+    ;(function(){
+        var $table = $("#table");
+        var $addBtn = $('#add_btn');
+        var $addBtnDlg = $('#form_dlg');
+        var $pwdReset  = $('#pwd_reset');
+        var $isUse = $('.is-use');
+        //服务器信息弹框
+        var addDialog = new  BootstrapDialog({
+            title:'新增用户',
+            message:function(){
+                var msg = $addBtnDlg.html();
+                $addBtnDlg.remove();
+                return msg;
+            },
+            nl2br:false,
+            data:{},
+            onshown:function(dialogRef){
+                var $form = $('#dlg_fm');
+                if(!$.is_null(dialogRef.data)){ //修改 表单赋值
+                    $form.formLoad(dialogRef.data);
+                }
+            },
+            buttons:[{
+                id:'btn-ok',
+                label:'保存',
+                cssClass:'btn-primary',
+                action:function(dialogRef){
+                    var $form = $('#dlg_fm');
+                    $form.formSubmit({
+                        url:"{:url('/AdminUser/save')}",
+                        success:function(result){
+                            if(result.success){
+                                dialogRef.close();
+                                $table.bootstrapTable('refresh');
+                            }
+                            $.dialogMsg({message:result.msg});
+                        }
+                    });
+                },
+            },
+                {
+                    id:'btn-false',
+                    label:'取消',
+                    cssClass:'btn-default',
+                    action:function(dialogRef){
+                        dialogRef.close();
+                    }
+                },]
+        });
+
+        $table.bootstrapTable({
+            url:"{:url('getList')}",
+            idField:'id',
+            search:true,
+            searchOnEnterKey:false,
+            clickToSelect:true,
+            striped:true,
+            pagination:true,
+            pageSize:15,
+            toolbar:'#service_table_btn',
+            columns:[
+                {field:'checked',title:'选择',checkbox:true},
+                {field:'username',title:'用户名',align:'center',sortable:true},
+                {field:'status_name',title:'状态',align:'center',sortable:true},
+                {field:'update_time',title:'更新时间',align:'center',sortable:true},
+                {field:'create_time',title:'创建时间',align:'center',sortable:true},
+                {field:'last_login_time_str',title:'最后一次登录时间',align:'center',sortable:true},
+                {field:'last_login_ip',title:'最后一次登录IP',align:'center'},
+            ],
+        });
+        //新增操作
+        $addBtn.click(function(){
+            addDialog.data = {};
+            addDialog.open();
+        });
+        /**
+         * 重置密码
+         */
+        $pwdReset.click(function(){
+            var selectRow = $table.bootstrapTable('getSelections');
+            if(selectRow.length < 1){
+                $.dialogMsg({message:'请选择操作的数据'});
+                return false;
+            }
+            if(selectRow.length > 1){
+                $.dialogMsg({message:'只能选择一条数据'});
+                return false;
+            }
+            $.post('{:url("pwdReset")}',{id:selectRow[0].id},function(result){
+                $.dialogMsg({message:result.msg,autoClose:false});
+                $table.bootstrapTable('refresh');
+            });
+        });
+
+        /**
+         * 启停用操作
+         */
+        $isUse.click(function(){
+            var selectRow = $table.bootstrapTable('getSelections');
+            if(selectRow.length > 0){
+                var lab = $(this).attr('lab');
+                var id = [];
+                $.each(selectRow,function (k,v) {
+                   id.push(v.id);
+                });
+                $.post('{:url("operateStatus")}',{lab:lab,id:JSON.stringify(id)},function(result){
+                    if(result.success){
+                        $table.bootstrapTable('refresh');
+                    }
+                    $.dialogMsg({message:result.msg});
+                });
+            } else {
+                $.dialogMsg({message:'请选择数据'});
+            }
+
+        });
+    })(jQuery,window,document)
+
+</script>
+
+

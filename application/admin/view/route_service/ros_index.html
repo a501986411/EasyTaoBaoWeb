@@ -1,0 +1,134 @@
+<div id="service_table_btn">
+    <button type="button" class="btn btn-info" id="test_link">尝试连接</button>
+</div>
+<div class="table-responsive">
+    <table id="service_table">
+    </table>
+</div>
+{include file='route_service/form'/}
+{include file='route_service/link_form'/}
+<script>
+    (function(){
+        var $table = $("#service_table");
+        var $testLink = $('#test_link');
+        var $linkDlg = $('#link_dlg');
+        //测试链接弹框
+        var linkDlg = new BootstrapDialog({
+            title:'连接测试',
+            message:function(){
+                var msg = $linkDlg.html();
+                $linkDlg.remove();
+                return msg;
+            },
+            nl2br:false,
+            data:{},
+            onshown:function(dialogRef){
+                var $form = $('#link_form');
+                var $linkDomain = $('#link_domain');
+                if(!$.is_null(dialogRef.data)){ //修改 表单赋值
+                    var byDomain = [];
+                    $linkDomain.append('<option value="'+dialogRef.data.domain+'">'+dialogRef.data.domain+'</option>')
+                    if(!$.is_null(dialogRef.data.by_domain)){
+                        byDomain =  dialogRef.data.by_domain.split('|');
+                        $.each(byDomain,function(k,v){
+                            $linkDomain.append('<option value="'+v+'">'+v+'</option>');
+                        });
+                    }
+                    $form.formLoad(dialogRef.data);
+                }
+            },
+            buttons:[{
+                id:'btn-ok',
+                label:'连接',
+                cssClass:'btn-primary',
+                action:function(dialogRef){
+                    var $form = $('#link_form');
+                    $form.formSubmit({
+                        url:"{:url('testLink')}",
+                        success:function(result){
+                            $.dialogMsg({message:result.msg});
+                        }
+                    });
+                },
+            },
+                {
+                    id:'btn-false',
+                    label:'取消',
+                    cssClass:'btn-default',
+                    action:function(dialogRef){
+                        dialogRef.close();
+                    }
+                },]
+        });
+        $table.bootstrapTable({
+            // url:"{:url('/RouteService/getRosStatus')}",
+            idField:'id',
+            uniqueId:'id',
+            search:true,
+            searchOnEnterKey:false,
+            clickToSelect:true,
+            striped:true,
+            pagination:true,
+            pageSize:10,
+//            sidePagination:'server',
+//            totalField:'total',
+//            dataField:'rows',
+            searchAlign:'right',
+            toolbar:'#service_table_btn',
+            singleSelect:true,
+            onDblClickRow:function(row,$element,field){
+                var data = $table.bootstrapTable('getData',true);
+                $.post("{:url('getRowInfo')}",{id:row.id},function(result){
+                    $table.bootstrapTable('updateByUniqueId',{id:result.id, row:result});
+                });
+            },
+
+            columns:[
+                {field:'checked',title:'选择',checkbox:true},
+                {field:'status',title:'是否正常',sortable:true,sortName:'status',align:'center',formatter:function(value,row,index){
+                    if(value)
+                    {
+                        return '是';
+                    } else {
+                        return '<sapn style="color:red">否</sapn>';
+                    }
+                }},
+
+                {field:'id',title:'id',align:'center',visible:false},
+                {field:'domain',title:'域名',align:'center'},
+                {field:'name',title:'名称',align:'center'},
+                {field:'cpu_ratio',title:'CPU占用率',align:'center',sortable:true,sortName:'cpu_float'},
+                {field:'memory_ratio',title:'内存占用率',align:'center',sortable:true,sortName:'memory_float'},
+                {field:'free_hdd_space',title:'剩余空间(M)',align:'center',sortable:true},
+                {field:'active_ratio',title:'在线用户率',align:'center',sortable:true,sortName:'active_float'},
+                {field:'now_time',title:'系统当前时间',align:'center'},
+                {field:'version',title:'系统版本号',align:'center'},
+                {field:'uptime',title:'运行时间',align:'center'},
+                {field:'update_t',title:'更新时间',align:'center',sortable:true,sortName:'update_int',formatter:function(value,row,index){
+                    var date = new Date();
+                    var time = date.getTime();
+                    if(((time/1000)) - row.update_int >  300){
+                        return '<span style="background-color: red;">'+value+'</span>'
+                    }
+                    return value;
+                }},
+            ],
+        });
+        //尝试连接
+        $testLink.click(function(){
+            var row = $table.bootstrapTable('getSelections');
+            if(!row.length){
+                $.dialogMsg({message:'请选择数据'})
+                return false;
+            } else if(row.length>1){
+                $.dialogMsg({message:'最多选择一行数据'})
+                return false;
+            }
+            linkDlg.data = row[0];
+            linkDlg.open();
+        });
+    })(jQuery,window,document);
+
+</script>
+
+

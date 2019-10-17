@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>ROS管理系统</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content='text/html;charset=utf-8' http-equiv='content-type'>
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}bootstrap/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}css/bootstrap-dialog.min.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}css/common.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}css/menu.css">
+
+
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{$Think.const.STATIC_PATH}bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="{$Think.const.STATIC_PATH}bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}js/bootstrap-dialog.min.js"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}js/jqUnitCookie.js"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}js/jq-tool.js"></script>
+
+</head>
+
+<body>
+<!--顶部导航条-->
+<nav class="navbar best-top-menu">
+    <div class="container-fluid">
+        <div class="navbar-collapse collapse extend-width no-pd-lf no-pd-rt">
+            <ul class="nav navbar-nav fr menu-font-color">
+                <li><a href="{:url('/Login/loginOut')}" class="menu-font-color">安全退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<?php
+    use think\Db;
+    use org\PhpTree;
+    $menuList = Db::query('select * from etb_admin_menu where status=1');
+    $tree = new PhpTree();
+    $menuTree = $tree->makeTree($menuList);
+?>
+<nav class="navbar no-bd-tp no-mg-bt no-bd-bt no-bd-lf no-bd-rt">
+    <div class="container-fluid no-pd-lf no-pd-rt no-mg-rt">
+        <div id="navbarTop2" class="navbar-collapse collapse extend-width no-pd-lf no-pd-rt first-menu-bg-color">
+            <ul class="nav navbar-nav navbar-left">
+                <?php
+                    foreach($menuTree as $k=>$value){
+                        if($value['pid'] == 0){
+                        echo '<li class="first-menu" data-id="'.$value['id'].'"><a href="javascript:void(0);" class="menu-font-color">'.$value['name'].'</a></li>';
+                        }
+                    }
+                ?>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container no-mg-lf no-mg-rt extend-width">
+    <div class="row">
+        <div class="col-sm-3 col-md-1 sidebar no-pd-lf no-pd-rt">
+            <?php foreach($menuTree as $k=>$v):?>
+            <ul class="nav nav-sidebar hidden pid-{$v.id}">
+                <?php if(isset($v['children']) && !empty($v['children'])):?>
+                    <?php foreach($v['children'] as $k1=>$v1):?>
+                    <li class="active second-menu "><a href="{:url($v1.url,['menuId'=>$v1.pid])}">{$v1.name}</a></li>
+                    <?php endforeach; ?>
+                <?php endif;?>
+            </ul>
+            <?php endforeach;?>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-2 main no-mg-lf no-pd-rt">
+            <div class="panel">
+                {__CONTENT__}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+    $('.first-menu').click(function(){
+        var secondClass = $(this).data('id');
+        var oldClass = $('.pid-'+secondClass).hasClass('hidden');
+        if(oldClass){
+            $('.second-menu').parent('ul').addClass('hidden');
+            $('.pid-'+secondClass).removeClass('hidden');
+        }
+    });
+
+    /**
+     * 二级菜单联动
+     */
+    $(document).ready(function(){
+        var menuId = $.cookie('admin_menuId');
+        var oldClass = $('.pid-'+menuId).hasClass('hidden');
+        if(oldClass){
+            $('.second-menu').parent('ul').addClass('hidden');
+            $('.pid-'+menuId).removeClass('hidden');
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,46 @@
+<div class="hidden" style="clear: both" id="menu_info_dlg">
+    <form class="form-horizontal" id="menu_info_fm">
+        <input type="hidden" class="form-control" id="id" name="id" placeholder="id">
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">名称:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="name" placeholder="名称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="url" class="col-sm-2 control-label">URL:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="url" name="url" placeholder="url">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sort" class="col-sm-2 control-label">排序:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="sort" name="sort" placeholder="排序">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="url" class="col-sm-2 control-label">上级菜单:</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="pid" id="pid">
+                    <option value="0">请选择</option>
+                    <?php foreach($pMenu as $k=>$v): ?>
+                        <option value="{$v.id}">{$v.name}</option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="radio" name="status" id="status1" value="1" checked="checked"> 启用
+                    </label>
+                    <label>
+                        <input type="radio" name="status" id="status2" value="2"> 停用
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

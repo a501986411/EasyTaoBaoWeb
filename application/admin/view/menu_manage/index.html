@@ -1,0 +1,130 @@
+<div id="menu_table_btn">
+    <button type="button" class="btn btn-success"  id="add_menu" >新增</button>
+    <button type="button" class="btn btn-info" id="use_true">启用</button>
+    <button type="button" class="btn btn-warning" id="use_false">停用</button>
+</div>
+<div class="table-responsive">
+    <table id="menu_table">
+    </table>
+</div>
+{include file='menu_manage/form'/}
+<script>
+    (function(){
+        var $table = $("#menu_table");
+        var $addMenu = $('#add_menu');
+        var $useTrue = $('#use_true');
+        var $useFalse = $('#use_false');
+        var $addMenuDlg = $('#menu_info_dlg');
+        //菜单详情
+        var addDialog = new  BootstrapDialog({
+            title:'新增菜单',
+            message:function(){
+                var msg = $addMenuDlg.html();
+                $addMenuDlg.remove();
+                return msg;
+            },
+            nl2br:false,
+            data:{},
+            onshown:function(dialogRef){
+                var $menuInfoFm = $('#menu_info_fm');
+                if(!$.is_null(dialogRef.data)){ //修改 表单赋值
+                    $menuInfoFm.formLoad(dialogRef.data);
+                }
+            },
+            buttons:[{
+                id:'btn-ok',
+                label:'保存',
+                cssClass:'btn-primary',
+                action:function(dialogRef){
+                    var $menuInfoFm = $('#menu_info_fm');
+                    $menuInfoFm.formSubmit({
+                        url:"{:url('save')}",
+                        success:function(result){
+                            if(result.success){
+                                dialogRef.close();
+                                $.reload();
+                            }
+                            $.dialogMsg({message:result.msg});
+                        }
+                    })
+                },
+            },
+            {
+                id:'btn-false',
+                label:'取消',
+                cssClass:'btn-default',
+                action:function(dialogRef){
+                    dialogRef.close();
+                }
+            },]
+        });
+
+        $table.bootstrapTable({
+            url:"{:url('/MenuManage/getList')}",
+            idField:'id',
+            search:true,
+            searchOnEnterKey:false,
+            clickToSelect:true,
+            striped:true,
+            pagination:true,
+            pageSize:15,
+            toolbar:'#menu_table_btn',
+            columns:[
+                {field:'checked',title:'选择',checkbox:true},
+                {field:'name',title:'名称'},
+                {field:'pid_name',title:'上级菜单名称'},
+                {field:'status_name',title:'状态'},
+            ],
+            onDblClickRow:function(row,$element,field){
+                addDialog.data = row;
+                addDialog.open();
+            }
+        });
+
+        //新增操作
+        $addMenu.click(function(){
+            addDialog.data = {};
+            addDialog.open();
+        });
+
+        //停用操作
+        $useFalse.click(function(){
+            var selectRow = $table.bootstrapTable('getSelections');
+            if($.is_null(selectRow)){
+                return false;
+            } else {
+                var pkArr = [];
+                $.each(selectRow,function(k,v){
+                    pkArr.push(v.id);
+                });
+                $.post("{:url('/MenuManage/operateStatus')}",{pkArr:JSON.stringify(pkArr),status:2},function(result){
+                    if(result.success){
+                        $.reload();
+                    }
+                    $.dialogMsg({message:result.msg});
+                });
+            }
+        });
+        //停用操作
+        $useTrue.click(function(){
+            var selectRow = $table.bootstrapTable('getSelections');
+            if($.is_null(selectRow)){
+                return false;
+            } else {
+                var pkArr = [];
+                $.each(selectRow,function(k,v){
+                    pkArr.push(v.id);
+                });
+                $.post("{:url('/MenuManage/operateStatus')}",{pkArr:JSON.stringify(pkArr),status:1},function(result){
+                    if(result.success){
+                        $.reload();
+                    }
+                    $.dialogMsg({message:result.msg});
+                });
+            }
+        });
+    })(jQuery,window,document)
+
+</script>
+
+

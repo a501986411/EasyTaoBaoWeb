@@ -1,0 +1,124 @@
+<div id="service_table_btn">
+    <button type="button" class="btn btn-success"  id="add_btn" >新增</button>
+    <button type="button" class="btn btn-warning" style="display: none;" id="del_btn">删除</button>
+</div>
+<div class="table-responsive">
+    <table id="service_table">
+    </table>
+</div>
+{include file='goods_manage/form'/}
+
+<script>
+    (function(){
+        var $table = $("#service_table");
+        var $addBtn = $('#add_btn');
+        var $delBtn = $('#del_btn');
+        var $addBtnDlg = $('#service_info_dlg');
+        var $testLink = $('#test_link');
+        var $linkDlg = $('#link_dlg');
+        //服务器信息弹框
+        var addDialog = new  BootstrapDialog({
+            title:'追踪商品信息',
+            message:function(){
+                var msg = $addBtnDlg.html();
+                $addBtnDlg.remove();
+                return msg;
+            },
+            nl2br:false,
+            data:{},
+            onshown:function(dialogRef){
+                var $form = $('#service_info_fm');
+                if(!$.is_null(dialogRef.data)){ //修改 表单赋值
+                    $form.formLoad(dialogRef.data);
+                }
+                var $overdue = $("#overdue");
+                $overdue.datetimepicker({
+                    format: 'yyyy-mm-dd hh:ii',
+                    language:'zh-CN',
+                    autoclose:1,
+                });
+            },
+            buttons:[{
+                id:'btn-ok',
+                label:'保存',
+                cssClass:'btn-primary',
+                action:function(dialogRef){
+                    var $form = $('#service_info_fm');
+                    $form.formSubmit({
+                        url:"{:url('save')}",
+                        success:function(result){
+                            if(result.success){
+                                dialogRef.close();
+                                $table.bootstrapTable('refresh');
+                            }
+                            $.dialogMsg({message:result.msg});
+                        }
+                    });
+                },
+            },
+                {
+                    id:'btn-false',
+                    label:'取消',
+                    cssClass:'btn-default',
+                    action:function(dialogRef){
+                        dialogRef.close();
+                    }
+                },]
+        });
+
+        $table.bootstrapTable({
+            url:"{:url('/GoodsManage/getList')}",
+            idField:'id',
+            search:true,
+            searchOnEnterKey:false,
+            clickToSelect:true,
+            striped:true,
+            pagination:true,
+            pageSize:15,
+            toolbar:'#service_table_btn',
+            columns:[
+                {field:'checked',title:'选择',checkbox:true},
+                {field:'own_goods_id',title:'自己商品ID',align:'center'},
+                {field:'other_goods_id',title:'跟踪商品ID',align:'center'},
+                {field:'title_is_change',title:'商品标题是否发生改变',align:'center'},
+                {field:'own_title',title:'自己商品标题',align:'center'},
+                {field:'other_title',title:'跟踪商品标题',align:'center'},
+                {field:'monthly_sales',title:'跟踪商品月销量',align:'center'},
+                {field:'other_update_time',title:'跟踪商品更新时间',align:'center',sortable:true},
+            ],
+            onDblClickRow:function(row,$element,field){
+                addDialog.data = row;
+                addDialog.open();
+                addDialog.setTitle('修改追踪商品信息');
+            }
+        });
+
+        //新增操作
+        $addBtn.click(function(){
+            addDialog.data = {};
+            addDialog.open();
+            addDialog.setTitle('新增追踪商品信息');
+        });
+
+        $delBtn.click(function(){
+            var selectRow = $table.bootstrapTable('getSelections');
+            if($.is_null(selectRow)){
+                return false;
+            } else {
+                var pkArr = [];
+                $.each(selectRow,function(k,v){
+                    pkArr.push(v.id);
+                });
+                $.post("{:url('delData')}",{pkArr:JSON.stringify(pkArr)},function(result){
+                    if(result.success){
+                        $table.bootstrapTable('refresh');
+                    }
+                    $.dialogMsg({message:result.msg});
+                });
+            }
+        });
+    })(jQuery,window,document)
+
+</script>
+
+
