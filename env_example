@@ -1,2 +1,8 @@
 [domain]
 sub = local
+[database]
+hostname = 127.0.0.1
+database = easy_taobao
+username = root
+password = root
+hostport = 3306
