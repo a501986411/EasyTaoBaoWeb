@@ -81,8 +81,18 @@
                 {field:'own_goods_id',title:'自己商品ID',align:'center'},
                 {field:'other_goods_id',title:'跟踪商品ID',align:'center'},
                 {field:'title_is_change',title:'商品标题是否发生改变',align:'center'},
-                {field:'own_title',title:'自己商品标题',align:'center'},
-                {field:'other_title',title:'跟踪商品标题',align:'center'},
+                {field:'own_title',title:'自己商品标题',align:'center',formatter:function(value,row,index){
+                    if(value == ''){
+                        return value;
+                    }
+                    return '<a target="_blank" href="'+row.own_goods_url+'">'+value+'</a>';
+                }},
+                {field:'other_title',title:'跟踪商品标题',align:'center',formatter:function(value,row,index){
+                        if(value == ''){
+                            return value;
+                        }
+                        return '<a target="_blank" href="'+row.other_goods_url+'">'+value+'</a>';
+                    }},
                 {field:'monthly_sales',title:'跟踪商品月销量',align:'center'},
                 {field:'other_update_time',title:'跟踪商品更新时间',align:'center',sortable:true},
             ],

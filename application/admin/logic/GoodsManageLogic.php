@@ -48,12 +48,21 @@ class GoodsManageLogic extends Model
         $goodsInfo = Goods::where('goods_id','in', $goodsId)->select();
         $goodsInfo = array_column($goodsInfo, null, 'goods_id');
         foreach ($list as $k=>$v){
-            $v['own_title'] = !isset($goodsInfo[$v->own_goods_id]) ? '' : $goodsInfo[$v->own_goods_id]['title'];
+            if(isset($goodsInfo[$v->own_goods_id])){
+                $ownGoods = $goodsInfo[$v->own_goods_id];
+                $v['own_title'] = $ownGoods['title'];
+                $v['own_goods_url'] = $ownGoods['detail_url'];
+            }else{
+                $v['own_title'] = '';
+                $v['own_goods_url'] = '';
+            }
 
             if(isset($goodsInfo[$v->other_goods_id])){
-                $v['other_title'] = $goodsInfo[$v->other_goods_id]['title'];
-                $v['monthly_sales'] = $goodsInfo[$v->other_goods_id]['monthly_sales'];
-                $v['other_update_time'] = $goodsInfo[$v->other_goods_id]['update_time'];
+                $otherGoods = $goodsInfo[$v->other_goods_id];
+                $v['other_title'] = $otherGoods['title'];
+                $v['other_goods_url'] = $otherGoods['detail_url'];
+                $v['monthly_sales'] = $otherGoods['monthly_sales'];
+                $v['other_update_time'] = $otherGoods['update_time'];
             }else{
                 $v['other_title'] = '';
                 $v['monthly_sales'] = '';
