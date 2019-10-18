@@ -98,7 +98,7 @@ return [
     // 域名部署
     'url_domain_deploy'      => true,
     // 域名根，如thinkphp.cn
-    'url_domain_root'        => 'etb.com',
+    'url_domain_root'        => 'easytaobao.com',
     // 是否自动转换URL中的控器和操作名 (大小写转换，对应试图文件目录名结构规?
     'url_convert'            => false,
     // 默认的访问控制器

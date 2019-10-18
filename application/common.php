@@ -10,10 +10,11 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+use think\Env;
 use think\Route;
 
 // admin子域名绑定到admin模块
-Route::domain('local','admin');
+Route::domain(Env::get('domain.sub'),'admin');
 
 function enDateToCn($date)
 {
