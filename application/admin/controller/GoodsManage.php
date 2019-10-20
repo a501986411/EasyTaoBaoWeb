@@ -32,8 +32,9 @@ class GoodsManage extends App
     {
         if(Request::instance()->isPost()){
             $data = input('post.');
-            if(intval($data['own_goods_id']) == intval($data['other_goods_id'])){
-                return ['success'=>false,'msg'=>'ID不能相同'];
+            $result = $this->validate($data,'Goods');
+            if($result !== true){
+                return ['success'=>false,'msg'=>$result];
             }
             $data['uid'] = isset($data['uid']) ? $data['uid'] : $this->userInfo['id'];
             //保存单个商品信息
@@ -42,22 +43,25 @@ class GoodsManage extends App
             $goodsInfo[1]['goods_id'] = $data['other_goods_id'];
             $goodsInfo[1]['detail_url'] = $data['other_goods_url'];
             unset($data['own_goods_url'],$data['other_goods_url']);
-            $goods = new Goods();
             try{
-                $goods->startTrans();
                 $logic = new GoodsManageLogic(new GoodsRelation());
                 $result = $logic->saveLogic($data);
-                if(!$result){
+                if(!$result) {
                     throw new Exception(lang('error server'));
                 }
-                $ret = $goods->saveAll($goodsInfo,$data['id']);
-                if($ret === false){
-                    throw new Exception(lang('error server'));
+                foreach ($goodsInfo as $row){
+                    if($row['goods_id']){
+                        $goods = new Goods();
+                        $info = $goods->where('goods_id',$row['goods_id'])->find();
+                        $ret = $goods->isUpdate(isset($info['goods_id']))->save($row);
+                        if($ret === false){
+                            throw new Exception(lang('error server'));
+                        }
+                    }
                 }
-                $goods->commit();
                 return ['success'=>true,'msg'=>lang('success options')];
             }catch (Exception $e){
-                $goods->rollback();
+                echo $e->getMessage();die;
                 return ['success'=>false,'msg'=>lang('error server')];
             }
         } else {
