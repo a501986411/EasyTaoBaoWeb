@@ -7,15 +7,17 @@
     </table>
 </div>
 {include file='goods_manage/form'/}
+{include file='goods_manage/sales_change_log'/}
 
 <script>
+
     (function(){
         var $table = $("#service_table");
         var $addBtn = $('#add_btn');
         var $delBtn = $('#del_btn');
         var $addBtnDlg = $('#service_info_dlg');
-        var $testLink = $('#test_link');
-        var $linkDlg = $('#link_dlg');
+        var $salesChangeDlg = $("#sales_change_dlg");
+        var $salesLogTb = $("#sales_change_log_tb");
         //服务器信息弹框
         var addDialog = new  BootstrapDialog({
             title:'追踪商品信息',
@@ -66,6 +68,43 @@
                 },]
         });
 
+        var salesLog = new  BootstrapDialog({
+            title:'24小时销量变化记录',
+            message:function(){
+                var msg = $salesChangeDlg.html();
+                $salesChangeDlg.remove();
+                return msg;
+            },
+            nl2br:false,
+            data:{},
+            onshown:function(dialogRef){
+                $.get("{:url('/GoodsManage/getSaleLog')}",{goods_id:dialogRef.data.goods_id},function (res) {
+                    $("#sales_change_log_tb").bootstrapTable('load', res);
+                })
+            },
+            buttons:[
+                {
+                    id:'btn-false',
+                    label:'取消',
+                    cssClass:'btn-default',
+                    action:function(dialogRef){
+                        dialogRef.close();
+                    }
+                }]
+        });
+        $salesLogTb.bootstrapTable({
+            idField:'id',
+            striped:true,
+            pagination:true,
+            pageSize:15,
+            sidePagination:'client',
+            dataType:'json',
+            columns:[
+                {field:'create_time',title:'统计时间',align:'center'},
+                {field:'monthly_sales',title:'月销量',align:'center'},
+                {field:'increase',title:'距上次统计增幅',align:'center'},
+            ],
+        });
         $table.bootstrapTable({
             url:"{:url('/GoodsManage/getList')}",
             idField:'id',
@@ -100,12 +139,21 @@
                         return '<a target="_blank" href="'+row.other_goods_url+'">'+value+'</a>';
                     }},
                 {field:'monthly_sales',title:'跟踪商品月销量',align:'center'},
+                {field:'show_sales_log',title:'24小时销量记录',align:'center',formatter:function(value,row,index){
+                    return '<button type="button" class="btn btn-success">查看</button>';
+                }},
                 {field:'other_update_time',title:'跟踪商品更新时间',align:'center',sortable:true},
             ],
             onDblClickRow:function(row,$element,field){
                 addDialog.data = row;
                 addDialog.open();
                 addDialog.setTitle('修改追踪商品信息');
+            },
+            onClickCell:function (field, value, row, $element) {
+                salesLog.data = {
+                    "goods_id":row.other_goods_id
+                }
+                salesLog.open();
             }
         });
 
@@ -133,6 +181,8 @@
                 });
             }
         });
+
+
     })(jQuery,window,document)
 
 </script>

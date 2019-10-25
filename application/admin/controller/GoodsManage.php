@@ -6,6 +6,7 @@ namespace app\admin\controller;
 
 use app\admin\logic\GoodsManageLogic;
 use app\admin\model\Goods;
+use app\admin\model\GoodsLog;
 use app\admin\model\GoodsRelation;
 use think\Exception;
 use think\Request;
@@ -61,11 +62,31 @@ class GoodsManage extends App
                 }
                 return ['success'=>true,'msg'=>lang('success options')];
             }catch (Exception $e){
-                echo $e->getMessage();die;
                 return ['success'=>false,'msg'=>lang('error server')];
             }
         } else {
             throw new Exception(lang('error param'));
         }
     }
+
+    public function getSaleLog()
+    {
+        $goodsId = input('get.goods_id');
+        $logMdl = new GoodsLog();
+        $data = $logMdl->where(['goods_id'=>$goodsId])
+            ->where('create_time','>=', date("Y-m-d H:i:s", (time()-24*3600)))
+            ->order('id','desc')->select();
+        $data = json_decode(json_encode($data),true);
+        $total = count($data);
+         for ($i = 0;$i < $total;$i++){
+             if($i != ($total-1)){
+                 $data[$i]['increase'] = $data[$i]['monthly_sales'] - $data[$i+1]['monthly_sales'];
+             }else{
+                 $data[$i]['increase'] = 0;
+             }
+        }
+        return $data;
+    }
+
+
 }
