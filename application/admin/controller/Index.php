@@ -6,7 +6,7 @@
 
         public function index()
         {
-            $this->redirect(url('/RouteService/index'));
+            $this->redirect(url('/GoodsManage/index'));
             return view();
         }
 

@@ -52,9 +52,11 @@ class GoodsManageLogic extends Model
                 $ownGoods = $goodsInfo[$v->own_goods_id];
                 $v['own_title'] = $ownGoods['title'];
                 $v['own_goods_url'] = $ownGoods['detail_url'];
+                $v['cover_img'] = $ownGoods['cover_img'];
             }else{
                 $v['own_title'] = '';
                 $v['own_goods_url'] = '';
+                $v['cover_img'] = '';
             }
 
             if(isset($goodsInfo[$v->other_goods_id])){

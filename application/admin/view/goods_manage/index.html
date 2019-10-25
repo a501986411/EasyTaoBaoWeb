@@ -78,6 +78,12 @@
             toolbar:'#service_table_btn',
             columns:[
                 {field:'checked',title:'选择',checkbox:true},
+                {field:'cover_img',title:'首图',align:'center',formatter:function(value,row,index){
+                        if(value == ''){
+                            return value;
+                        }
+                        return '<img src="'+value+'_60x60.jpg">';
+                    }},
                 {field:'own_goods_id',title:'自己商品ID',align:'center'},
                 {field:'other_goods_id',title:'跟踪商品ID',align:'center'},
                 {field:'title_is_change',title:'商品标题是否发生改变',align:'center'},
