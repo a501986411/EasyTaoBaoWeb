@@ -42,6 +42,9 @@ class GoodsManageLogic extends Model
             ->order($this->sortField,$this->way[$this->sortWay])
             ->where('uid','=', $uid)
             ->select();
+        if(empty($list)){
+            return [];
+        }
         $ownGoodsId = array_column($list,'own_goods_id');
         $otherGoodsId = array_column($list,'other_goods_id');
         $goodsId = array_merge($ownGoodsId,$otherGoodsId);

@@ -13,7 +13,6 @@ use think\Request;
 
 class GoodsManage extends App
 {
-    protected $datetime_format = false;
     public function index()
     {
         return view();
@@ -85,6 +84,21 @@ class GoodsManage extends App
              }
         }
         return $data;
+    }
+
+    public function delData()
+    {
+        if(Request::instance()->has('pkArr')){
+            $delPk = json_decode(input('post.pkArr'),true);
+            $goodsRelationMdl = new GoodsRelation();
+            $result = $goodsRelationMdl->where('id','in', $delPk)->delete();
+            if($result===false){
+                return ['success'=>false,'msg'=>lang('error server')];
+            }
+            return ['success'=>true,'msg'=>lang('success options')];
+        } else {
+            throw new Exception(lang('error param'));
+        }
     }
 
 

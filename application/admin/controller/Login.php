@@ -29,7 +29,7 @@
 				$password = input('post.password');
 				$logic = new LoginLogic(new AdminUser());
 				if($logic->login($username,$password)){
-					$this->success('登录成功',url('/GoodsManage/index'));
+					$this->success('登录成功',url('/GoodsManage/index'),'',1);
 				} else {
 					$this->error('用户名或者密码错误',url('/Login/index'));
 				}
