@@ -45,11 +45,6 @@
 			'setcookie' => true,
 		],
 
-		'template'               => [
-			'layout_on'     =>  true,
-			'layout_name'   =>  'layout/layout',
-		],
-
         //分页配置
         'paginate'               => [
             'type'      => 'bootstrap',

@@ -58,4 +58,10 @@
 			}
 			return true;
 		}
+
+        public function getTreeList()
+        {
+           $data =  $this->model->scope('StatusOne')->select();
+            return createTree($data);
+        }
 	}

@@ -78,3 +78,31 @@ function enDateToCn($date)
             exit;
         }
     }
+
+/**
+ * 把二维数组转化为树状结构数组
+ *
+ * [@since]   2016-12-05
+ * [@author] mingazi@163.com
+ * [@param]   array    $arr          要处理的数组
+ * [@param]   string   $pid          父级ID的值，默认是0
+ * @param   string   $idName       id的名称,默认是id
+ * @param   string   $pidName      pid的名称,默认是pid
+ * @param   string   $childName    下级的key名称，默认是child
+ * @return  array    $tree          生成的树状数组
+ */
+function createTree($arr = array(), $pid = 0, $idName = 'id', $pidName = 'pid', $childName = 'child')
+{
+    $tree = array();
+    foreach($arr as $k => $v)
+    {
+        if($v[$pidName] == $pid)
+        {
+            $tmp = $arr[$k];
+            unset($arr[$k]);
+            $tmp[$childName] = createTree($arr,$v[$idName],$idName,$pidName,$childName);
+            $tree[] = $tmp;
+        }
+    }
+    return $tree;
+}

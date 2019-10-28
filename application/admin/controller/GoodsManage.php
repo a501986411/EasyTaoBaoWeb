@@ -15,7 +15,7 @@ class GoodsManage extends App
 {
     public function index()
     {
-        return view();
+        return view('list');
     }
 
     /**
