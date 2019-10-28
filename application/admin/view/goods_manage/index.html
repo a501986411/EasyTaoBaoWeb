@@ -17,7 +17,6 @@
         var $delBtn = $('#del_btn');
         var $addBtnDlg = $('#service_info_dlg');
         var $salesChangeDlg = $("#sales_change_dlg");
-        var $salesLogTb = $("#sales_change_log_tb");
         //服务器信息弹框
         var addDialog = new  BootstrapDialog({
             title:'追踪商品信息',
@@ -78,9 +77,22 @@
             nl2br:false,
             data:{},
             onshown:function(dialogRef){
-                $.get("{:url('/GoodsManage/getSaleLog')}",{goods_id:dialogRef.data.goods_id},function (res) {
-                    $("#sales_change_log_tb").bootstrapTable('load', res);
-                })
+                var $salesLogTb = $("#sales_change_log_tb");
+                $salesLogTb.bootstrapTable({
+                    idField:'id',
+                    striped:true,
+                    pagination:true,
+                    pageSize:15,
+                    sidePagination:'client',
+                    clickToSelect:false,
+                    dataType:'json',
+                    url:"{:url('/GoodsManage/getSaleLog')}"+"?goods_id="+dialogRef.data.goods_id,
+                    columns:[
+                        {field:'create_time',title:'统计时间',align:'center'},
+                        {field:'monthly_sales',title:'月销量',align:'center'},
+                        {field:'increase',title:'距上次统计增幅',align:'center'},
+                    ],
+                });
             },
             buttons:[
                 {
@@ -92,19 +104,7 @@
                     }
                 }]
         });
-        $salesLogTb.bootstrapTable({
-            idField:'id',
-            striped:true,
-            pagination:true,
-            pageSize:15,
-            sidePagination:'client',
-            dataType:'json',
-            columns:[
-                {field:'create_time',title:'统计时间',align:'center'},
-                {field:'monthly_sales',title:'月销量',align:'center'},
-                {field:'increase',title:'距上次统计增幅',align:'center'},
-            ],
-        });
+
         $table.bootstrapTable({
             url:"{:url('/GoodsManage/getList')}",
             idField:'id',

@@ -76,7 +76,6 @@ class GoodsManage extends App
         $data = $logMdl->where(['goods_id'=>$goodsId])
             ->where('create_time','>=', date("Y-m-d H:i:s", (time()-24*3600)))
             ->order('id','desc')->select();
-        $data = json_decode(json_encode($data),true);
         $total = count($data);
          for ($i = 0;$i < $total;$i++){
              if($i != ($total-1)){
