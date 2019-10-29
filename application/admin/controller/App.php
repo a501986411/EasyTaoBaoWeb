@@ -16,7 +16,6 @@
 		private $menuId;
 		protected $beforeActionList = [
 		    'interceptor' ,//拦截器
-            'setMenuId',//设置菜单cookie 用于菜单回显
             'setUserInfo', //设置登录用户信息
         ];
 
@@ -30,27 +29,13 @@
         {
             $this->userInfo = json_decode(cookie('user'),true);
         }
-
-        /**
-         * 设置菜单Id缓存
-         */
-		protected function setMenuId(){
-
-            if(Request::instance()->has('menuId')){
-                $this->menuId = input('param.menuId');
-                if($this->menuId){
-                    cookie('menuId',$this->menuId);
-                }
-            }
-        }
-
         /**
          * 访问拦截器
          */
         protected function interceptor(){
             $logic = new LoginLogic(new AdminUser());
             if(!$logic->checkLoginStatus()){
-                $this->error(lang('login timeout'),url('/Login/index'));
+                echo "<script>top.document.location.href='/Login/index';</script>";
             } else {
                 cookie('user',cookie('user'));
             }

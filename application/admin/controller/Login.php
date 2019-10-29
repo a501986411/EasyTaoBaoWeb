@@ -35,8 +35,15 @@
 				}
 			} else{
 				//登录页面 不需要模板布局
-				$this->view->engine->layout(false);
-				return view();
+                $logic = new LoginLogic(new AdminUser());
+                if(!$logic->checkLoginStatus()){
+                    $this->view->engine->layout(false);
+                    return view();
+                } else {
+                    cookie('user',cookie('user'));
+                    $this->redirect(url('/Left/left'));
+                }
+
 			}
 
 		}
