@@ -4,6 +4,8 @@
 namespace app\admin\controller;
 
 
+use app\admin\logic\BaseLogic;
+use app\admin\logic\GoodsLogLogic;
 use app\admin\logic\GoodsManageLogic;
 use app\admin\model\Goods;
 use app\admin\model\GoodsLog;
@@ -24,7 +26,23 @@ class GoodsManage extends App
     public function getList()
     {
         $logic = new GoodsManageLogic(new GoodsRelation());
-        $data = $logic->getList($this->userInfo['id']);
+        $logic->setPageInfo(input('get.page',1), input('get.limit'));
+        $where['uid'] = ['eq', $this->userInfo['id']];
+        if(input('?get.title')){
+            $title = input('get.title');
+            if($title){
+                $goodsMdl = new Goods();
+                $goodsId = $goodsMdl->getGoodsIdByTitle($title);
+                $where['own_goods_id|other_goods_id'] = ['in', $goodsId];
+            }
+        }
+        if(input('?get.title_is_change')){
+            $titleIsChange = input('get.title_is_change');
+            if($titleIsChange){
+                $where['title_is_change'] = ['eq',($titleIsChange-1)];
+            }
+        }
+        $data = $logic->getList($where);
         return $data;
     }
 
@@ -68,22 +86,18 @@ class GoodsManage extends App
         }
     }
 
+    public function showSaleLog()
+    {
+        return view('show_sale_log');
+    }
+
     public function getSaleLog()
     {
-        $goodsId = input('get.goods_id');
-        $logMdl = new GoodsLog();
-        $data = $logMdl->where(['goods_id'=>$goodsId])
-            ->where('create_time','>=', date("Y-m-d H:i:s", (time()-24*3600)))
-            ->order('id','desc')->select();
-        $total = count($data);
-         for ($i = 0;$i < $total;$i++){
-             if($i != ($total-1)){
-                 $data[$i]['increase'] = $data[$i]['monthly_sales'] - $data[$i+1]['monthly_sales'];
-             }else{
-                 $data[$i]['increase'] = 0;
-             }
-        }
-        return $data;
+        $where['goods_id'] = ['eq',input('get.goods_id')];
+        $where['create_time'] = ['>=',date("Y-m-d H:i:s", (time()-24*3600))];
+        $logic = new GoodsLogLogic();
+        $logic->setPageInfo(input('get.page',1),input('get.limit'));
+        return $logic->getList($where);
     }
 
     public function delData()
@@ -99,6 +113,11 @@ class GoodsManage extends App
         } else {
             throw new Exception(lang('error param'));
         }
+    }
+
+    public function showEdit()
+    {
+        return view('edit');
     }
 
 

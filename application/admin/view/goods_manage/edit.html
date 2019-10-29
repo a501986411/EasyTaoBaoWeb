@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}/css/font.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}/css/xadmin.css">
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}/js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]--></head>
+<style>
+    .layui-form-label {width: 116px;}
+    .layui-form-item .layui-input-inline {width: 270px;}
+</style>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form" lay-filter="track_goods_fm">
+            <input type="hidden" class="form-control" id="id" name="id" placeholder="id">
+            <div class="layui-form-item">
+                <label for="own_goods_id" class="layui-form-label">
+                    <span class="x-red">*</span>自己的商品ID:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="own_goods_id" name="own_goods_id" lay-verify="required|number" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label for="own_goods_url" class="layui-form-label">
+                    <span class="x-red">*</span>自己商品详情页URL:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="own_goods_url" name="own_goods_url" lay-verify="required|url" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label for="other_goods_id" class="layui-form-label">
+                    <span class="x-red">*</span>跟踪商品详情页ID:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="other_goods_id" name="other_goods_id" lay-verify="required|number" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label for="other_goods_url" class="layui-form-label">
+                    <span class="x-red">*</span>跟踪商品详情页URL:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="other_goods_url" name="other_goods_url" lay-verify="required|url" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layer'],function() {
+        $ = layui.jquery;
+        var form = layui.form,
+        layer = layui.layer;
+
+        //监听提交
+        form.on('submit(add)',
+            function(data) {
+                $.post("{:url('/GoodsManage/save')}",data.field,function (res) {
+                    layer.alert(res.msg, {icon: 6},function() {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                            xadmin.father_reload();
+                        });
+                });
+                return false;
+            });
+
+    });
+</script>
+
+</body>
+
+</html>

@@ -6,14 +6,13 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Goods extends Model
+class Goods extends Base
 {
-    public function getCreateTimeAttr($time)
-    {
-        return $time;//返回create_time原始数据，不进行时间戳转换。
-    }
-    public function getUpdateTimeAttr($time)
-    {
-        return $time;//返回create_time原始数据，不进行时间戳转换。
+    public function getGoodsIdByTitle($title){
+        $data = $this->where('title','like','%'.$title.'%')->field('goods_id')->select();
+        if($data){
+            return array_column($data,'goods_id');
+        }
+        return [];
     }
 }

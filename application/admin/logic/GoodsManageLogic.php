@@ -9,39 +9,32 @@ use app\admin\model\GoodsRelation;
 use app\admin\model\RouteService;
 use think\Model;
 
-class GoodsManageLogic extends Model
+class GoodsManageLogic extends BaseLogic
 {
     protected $model;
-    protected $offset;
-    protected $limit;
-    protected $sortField;
-    protected $sortWay;
-    protected $way = ['asc'=>SORT_ASC,'desc'=>SORT_DESC];
 
-    public function __construct(GoodsRelation $model,$offset=1,$limit='',$sortField='id',$sortWay='desc')
+    public function __construct(GoodsRelation $model)
     {
         parent::__construct();
         $this->model = $model;
-        $this->offset = $offset;
-        $this->limit = $limit;
-        $this->sortField = $sortField;
-        $this->sortWay = $sortWay;
-        if(!empty($this->limit)){
-            $this->model->page($this->offset,$this->limit);
-        }
     }
 
 
     /**
-     * 获取列表
-     * @return false|\PDOStatement|string|\think\Collection
+     * @param $where
+     * @return array|false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public function getList($uid)
+    public function getList($where)
     {
         $list = $this->model
-            ->order($this->sortField,$this->way[$this->sortWay])
-            ->where('uid','=', $uid)
+            ->where($where)
+            ->order($this->order)
+            ->limit($this->offset,$this->pageSize)
             ->select();
+        $total = $this->model->where($where)->count();
         if(empty($list)){
             return [];
         }
@@ -73,14 +66,9 @@ class GoodsManageLogic extends Model
                 $v['monthly_sales'] = '';
                 $v['other_update_time']= '';
             }
-
-            if(trim($v['own_title']) != trim($v['other_title'])){
-                $v['title_is_change'] = '<span style="color: red;">已改变</span>';
-            }else{
-                $v['title_is_change'] = '<span style="color: green;">未改变</span>';
-            }
+            $v['title_is_change_test'] = $v['title_is_change'] == 1 ? '<span>未改变</span>' : '<span style="color: red;">已改变</span>';
         }
-        return $list;
+        return $this->getPageList($list,$total);
     }
 
     /**
@@ -96,6 +84,7 @@ class GoodsManageLogic extends Model
         }
         return true;
     }
+
 
 
 }

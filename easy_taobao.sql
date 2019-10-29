@@ -96,3 +96,6 @@ ADD COLUMN `cover_img`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_gener
 ALTER TABLE `etb_goods_log`
 ADD COLUMN `cover_img`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '首图连接' AFTER `create_time`;
 
+#2019-10-29
+ALTER TABLE `etb_goods_relation`
+ADD COLUMN `title_is_change`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '标题是否一致；1：一致；0:不一致' AFTER `update_time`;
