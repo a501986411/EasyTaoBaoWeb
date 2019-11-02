@@ -17,7 +17,13 @@
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<style>
+    .layui-table-cell {
+        height: auto;
+        line-height: 25px;
+    }
 
+</style>
 <body>
 <div class="x-nav" style="padding: 0 10px 0 2px;">
             <span class="layui-breadcrumb">
@@ -88,7 +94,7 @@
         var form = layui.form;
         table.render({
             elem: '#track_goods_tb',
-            height: 312,
+            height: 'full-200',
             url: '/GoodsManage/getList/',
             page: true,
             loading:true,
