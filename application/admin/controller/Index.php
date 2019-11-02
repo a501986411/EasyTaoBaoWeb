@@ -6,7 +6,7 @@
 
         public function index()
         {
-            $this->redirect(url('/GoodsManage/index'));
+            $this->redirect(url('/Left/left'));
             return view();
         }
 
