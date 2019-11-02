@@ -37,13 +37,13 @@
                         <div class="layui-inline layui-show-xs-block">
                             <input type="text" name="title" placeholder="请输商品标题"  autocomplete="off" class="layui-input">
                         </div>
-                        <div class="layui-input-inline layui-show-xs-block">
-                            <select name="title_is_change">
-                                <option value="">标题变化筛选</option>
-                                <option value="1">已改变</option>
-                                <option value="2">未改变</option>
-                            </select>
-                        </div>
+<!--                        <div class="layui-input-inline layui-show-xs-block">-->
+<!--                            <select name="title_is_change">-->
+<!--                                <option value="">标题变化筛选</option>-->
+<!--                                <option value="1">已改变</option>-->
+<!--                                <option value="2">未改变</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
                         <div class="layui-inline layui-show-xs-block">
                             <button class="layui-btn" lay-submit="" lay-filter="sreach">
                                 <i class="layui-icon">&#xe615;</i></button>
@@ -104,7 +104,7 @@
                 }},
                 {field:'own_goods_id',title:'自己商品ID',align:'center'},
                 {field:'other_goods_id',title:'跟踪商品ID',align:'center'},
-                {field:'title_is_change_test',title:'标题是否改变',align:'center',sort:true},
+                {field:'title_is_change_text',title:'标题是否改变',align:'center',sort:true},
                 {field:'own_title',title:'自己商品标题',align:'center',templet:function(d){
                         if(d.own_title == ''){
                             return d.own_title ;

@@ -66,7 +66,9 @@ class GoodsManageLogic extends BaseLogic
                 $v['monthly_sales'] = '';
                 $v['other_update_time']= '';
             }
-            $v['title_is_change_test'] = $v['title_is_change'] == 1 ? '<span>未改变</span>' : '<span style="color: red;">已改变</span>';
+            $v['title_is_change_text'] = trim($v['other_title']) == trim($v['own_title']) ?
+                                        '<span>未改变</span>' :
+                                        '<span style="color: red;">已改变</span>';
         }
         return $this->getPageList($list,$total);
     }
