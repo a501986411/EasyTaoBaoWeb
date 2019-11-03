@@ -99,3 +99,7 @@ ADD COLUMN `cover_img`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_gener
 #2019-10-29
 ALTER TABLE `etb_goods_relation`
 ADD COLUMN `title_is_change`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '标题是否一致；1：一致；0:不一致' AFTER `update_time`;
+#2019-11-13
+ALTER TABLE `etb_goods_log`
+MODIFY COLUMN `monthly_sales`  varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '月销量或者30天内销量' AFTER `title`;
+

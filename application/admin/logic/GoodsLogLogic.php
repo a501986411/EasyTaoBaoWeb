@@ -41,4 +41,21 @@ class GoodsLogLogic extends BaseLogic
         }
         return $this->getPageList($data, $total);
     }
+
+    /**
+     * 获取商品昨日结束时的销量
+     * @param array $goodsId
+     * @return array
+     */
+    public function getYesterdayLastOne($goodsId = [])
+    {
+        $map['create_time'] = ['<', date('Y-m-d 00:00:00')];
+        if (is_array($goodsId)) {
+            $map['goods_id'] = ['in', $goodsId];
+        } else {
+            $map['goods'] = ['eq', $goodsId];
+        }
+        $data = $this->model->where($map)->order('id desc')->group('goods_id')->column('*','goods_id');
+        return $data;
+    }
 }

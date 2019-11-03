@@ -43,6 +43,8 @@ class GoodsManageLogic extends BaseLogic
         $goodsId = array_merge($ownGoodsId,$otherGoodsId);
         $goodsInfo = Goods::where('goods_id','in', $goodsId)->select();
         $goodsInfo = array_column($goodsInfo, null, 'goods_id');
+        $logLogic = new GoodsLogLogic();
+        $yesterdayInfo = $logLogic->getYesterdayLastOne($otherGoodsId);
         foreach ($list as $k=>$v){
             if(isset($goodsInfo[$v->own_goods_id])){
                 $ownGoods = $goodsInfo[$v->own_goods_id];
@@ -69,6 +71,9 @@ class GoodsManageLogic extends BaseLogic
             $v['title_is_change_text'] = trim($v['other_title']) == trim($v['own_title']) ?
                                         '<span>未改变</span>' :
                                         '<span style="color: red;">已改变</span>';
+            $v['yesterday_sales'] = isset($yesterdayInfo[$v['other_goods_id']]) ?
+                $yesterdayInfo[$v['other_goods_id']]['monthly_sales'] : -1;
+            $v['sales_diff'] = intval($v['monthly_sales']) - intval($v['yesterday_sales']);
         }
         return $this->getPageList($list,$total);
     }

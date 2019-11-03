@@ -1,3 +1,4 @@
+app_debug = false
 [domain]
 sub = local
 [database]

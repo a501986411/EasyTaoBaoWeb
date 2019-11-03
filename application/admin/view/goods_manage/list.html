@@ -123,11 +123,26 @@
                         }
                         return '<a target="_blank" href="'+d.other_goods_url+'">'+d.other_title+'</a>';
                     }},
-                {field:'monthly_sales',title:'跟踪商品月销量',align:'center'},
+                {field:'yesterday_sales',title:'昨日销量',align:'center',templet:function(d){
+                        if(d.yesterday_sales == -1){
+                            return '无数据';
+                        }
+                        return d.yesterday_sales;
+                    }},
+                {field:'monthly_sales',title:'当前销量',align:'center',sort:true},
+                {field:'sales_diff',title:'销量差异',align:'center',sort:true,templet:function(d){
+                        if(d.yesterday_sales == -1){
+                            return '无数据';
+                        }
+                       if(d.sales_diff > 0){
+                           return '+'+d.sales_diff;
+                       }
+                       return d.sales_diff;
+                    }},
                 {field:'show_sales_log',title:'24小时销量记录',align:'center',templet:function(d){
                         return '<button type="button" class="btn btn-success" onclick="showSaleLog('+d.other_goods_id+')">查看</button>';
                     }},
-                {field:'other_update_time',title:'跟踪商品更新时间',align:'center',sortable:true},
+                {field:'other_update_time',title:'数据更新时间',align:'center',sortable:true},
             ]]
         });
         form.on('submit(sreach)',
