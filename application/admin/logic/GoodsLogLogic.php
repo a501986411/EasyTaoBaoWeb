@@ -10,6 +10,7 @@ use app\admin\model\GoodsLog;
 class GoodsLogLogic extends BaseLogic
 {
     protected $model;
+
     public function __construct()
     {
         parent::__construct();
@@ -19,24 +20,24 @@ class GoodsLogLogic extends BaseLogic
     public function getList($where = [])
     {
         $total = $this->model->where($where)->count();
-        $data = $this->model->where($where)->order($this->order)->limit($this->offset,$this->pageSize)->select();
+        $data = $this->model->where($where)->order($this->order)->limit($this->offset, $this->pageSize)->select();
         $getTotal = count($data);
-        for ($i = 0;$i < $getTotal;$i++){
-            if($i != ($getTotal-1)){
-                if(intval($data[$i]['monthly_sales']) != $data[$i]['monthly_sales']){ //处理 销量 x000+
-                    $data[$i]['increase'] = intval($data[$i]['monthly_sales']) - intval($data[$i+1]['monthly_sales']);
-                    if($data[$i]['increase'] == 0){
+        for ($i = 0; $i < $getTotal; $i++) {
+            if ($i != ($getTotal - 1)) {
+                if (intval($data[$i]['monthly_sales']) != $data[$i]['monthly_sales']) { //处理 销量 x000+
+                    $data[$i]['increase'] = intval($data[$i]['monthly_sales']) - intval($data[$i + 1]['monthly_sales']);
+                    if ($data[$i]['increase'] == 0) {
                         $data[$i]['increase'] = "涨幅不足1000";
-                    }else{
+                    } else {
                         $data[$i]['increase'] .= '+';
                     }
-                }else{
-                    $data[$i]['increase'] = $data[$i]['monthly_sales'] - $data[$i+1]['monthly_sales'];
+                } else {
+                    $data[$i]['increase'] = $data[$i]['monthly_sales'] - $data[$i + 1]['monthly_sales'];
                 }
-            }else{
+            } else {
                 $data[$i]['increase'] = 0;
             }
         }
-        return $this->getPageList($data,$total);
+        return $this->getPageList($data, $total);
     }
 }
