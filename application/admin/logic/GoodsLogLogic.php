@@ -23,7 +23,16 @@ class GoodsLogLogic extends BaseLogic
         $getTotal = count($data);
         for ($i = 0;$i < $getTotal;$i++){
             if($i != ($getTotal-1)){
-                $data[$i]['increase'] = $data[$i]['monthly_sales'] - $data[$i+1]['monthly_sales'];
+                if( (intval($data[$i]['monthly_sales']) != $data[$i]['monthly_sales'])){ //处理 销量 x000+
+                    $data[$i]['increase'] = intval($data[$i]['monthly_sales'] - intval($data[$i+1]['monthly_sales']);
+                    if($data[$i]['increase'] == 0){
+                        $data[$i]['increase'] = "涨幅不足1000";
+                    }else{
+                        $data[$i]['increase'] .= '+';
+                    }
+                }else{
+                    $data[$i]['increase'] = $data[$i]['monthly_sales'] - $data[$i+1]['monthly_sales'];
+                }
             }else{
                 $data[$i]['increase'] = 0;
             }
