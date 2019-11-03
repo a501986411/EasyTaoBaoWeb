@@ -49,13 +49,19 @@ class GoodsLogLogic extends BaseLogic
      */
     public function getYesterdayLastOne($goodsId = [])
     {
-        $map['create_time'] = ['<', date('Y-m-d 00:00:00')];
+        $map['create_time'][] = ['<', date('Y-m-d 00:00:00')];
+        $map['create_time'][] = ['>=', date('Y-m-d 00:00:00', mktime(0,0,0,date("m"),date("d")-1,date("Y")))];
         if (is_array($goodsId)) {
             $map['goods_id'] = ['in', $goodsId];
         } else {
             $map['goods'] = ['eq', $goodsId];
         }
-        $data = $this->model->where($map)->order('id desc')->group('goods_id')->column('*','goods_id');
+        $maxId = $this->model->where($map)->field('max(id) as max_id')->group('goods_id')->select();
+        if(!$maxId){
+            return [];
+        }
+        $maxId = array_column($maxId,'max_id');
+        $data = $this->model->where('id','in', $maxId)->column('*','goods_id');
         return $data;
     }
 }
