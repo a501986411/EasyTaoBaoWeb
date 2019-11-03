@@ -34,7 +34,7 @@ class GoodsLogLogic extends BaseLogic
                 } else {
                     $increase = intval($data[$i]['monthly_sales']) - intval($data[$i + 1]['monthly_sales']);
                 }
-                $data[$i]['monthly_sales'] = $increase;
+                $data[$i]['increase'] = $increase;
             } else {
                 $data[$i]['increase'] = 0;
             }
