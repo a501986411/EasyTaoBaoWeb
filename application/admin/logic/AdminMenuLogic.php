@@ -61,7 +61,7 @@
 
         public function getTreeList()
         {
-           $data =  $this->model->scope('StatusOne')->select();
+            $data =  $this->model->scope('StatusOne')->select();
             return createTree($data);
         }
 	}

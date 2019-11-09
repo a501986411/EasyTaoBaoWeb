@@ -39,5 +39,15 @@ class BaseLogic extends Model
        return $ret;
     }
 
+    public function success($msg = '操作成功')
+    {
+        return ['success'=>true, 'msg'=>$msg];
+    }
+
+    public function error($msg = '操作失败')
+    {
+        return ['success'=>false, 'msg'=> $msg];
+    }
+
 
 }

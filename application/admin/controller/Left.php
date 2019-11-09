@@ -13,6 +13,7 @@ class Left extends App
     {
         $adminMenuLogic = new AdminMenuLogic((new AdminMenu()));
         $menuTree = $adminMenuLogic->getTreeList();
+//        dump(json_decode(json_encode($menuTree),true));die;
         return view('',['menuTree'=>$menuTree,'userInfo'=>$this->userInfo]);
     }
 }
