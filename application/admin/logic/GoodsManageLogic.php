@@ -36,7 +36,7 @@ class GoodsManageLogic extends BaseLogic
             ->select();
         $total = $this->model->where($where)->count();
         if(empty($list)){
-            return [];
+            return $this->getPageList();
         }
         $ownGoodsId = array_column($list,'own_goods_id');
         $otherGoodsId = array_column($list,'other_goods_id');

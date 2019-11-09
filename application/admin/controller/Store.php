@@ -4,6 +4,7 @@
 namespace app\admin\controller;
 
 use app\admin\logic\Store as StoreLg;
+use think\Request;
 
 class Store extends App
 {
@@ -32,6 +33,13 @@ class Store extends App
        return $result;
     }
 
+    public function setNowStore()
+    {
+        $storeId = input('store_id');
+        $logic = new StoreLg();
+        $res = $logic->setNowStore($this->userInfo['id'], $storeId);
+        return ['success'=>$res];
+    }
 
 
 }

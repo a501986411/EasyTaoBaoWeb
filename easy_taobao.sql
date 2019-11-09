@@ -103,3 +103,13 @@ ADD COLUMN `title_is_change`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '标题是�
 ALTER TABLE `etb_goods_log`
 MODIFY COLUMN `monthly_sales`  varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '月销量或者30天内销量' AFTER `title`;
 
+#store
+ALTER TABLE `etb_goods_relation`
+ADD COLUMN `store_id`  int(11) NOT NULL DEFAULT 0,
+ADD INDEX `idx_uid` (`uid`) ,
+ADD INDEX `idx_store_id` (`store_id`) ;
+
+ALTER TABLE `etb_goods`
+ADD COLUMN `store_id`  int(11) NOT NULL DEFAULT 0 COMMENT '店铺id' AFTER `cover_img`;
+
+

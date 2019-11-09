@@ -30,6 +30,21 @@
     <div class="left_open">
         <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
     </div>
+    <ul class="layui-nav left fast-add" lay-filter="">
+        <li class="layui-nav-item">
+            <input type="hidden" value="{$now_store['id']}" id="now_store_id">
+            <a href="javascript:;" title="点击切换店铺" >{$now_store['name']}</a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <?php foreach($store_list as $store):?>
+                <dd>
+                    <a onclick="changeStore({$store['id']}, '{$store[\'name\']}')">
+                        <i class="iconfont">&#xe6a2;</i>{$store['name']}</a>
+                </dd>
+                <?php endforeach;?>
+            </dl>
+        </li>
+    </ul>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
             <a href="javascript:;">{$userInfo['username']}</a>
@@ -104,5 +119,18 @@
 <!-- 右侧主体结束 -->
 <!-- 中部结束 -->
 </body>
-
+<script>
+    function changeStore(store_id, store_name) {
+        if($("#now_store_id").val() == store_id){
+            return false;
+        }
+        $.post('/Store/setNowStore', {
+            store_id:store_id
+        }, function (res) {
+            if(res.success){
+                window.location.reload();
+            }
+        });
+    }
+</script>
 </html>

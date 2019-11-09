@@ -40,11 +40,13 @@
 			if($this->model->checkPassword($password,$userInfo['password_hash'])){
 				//密码验证成功 写cookie
 				cookie('user',json_encode($userInfo,JSON_UNESCAPED_UNICODE));
+				//设置当前的店铺
+                $storeLogic = new Store();
+                $storeLogic->setNowStore($userInfo['id']);
 				return true;
 			}
 			return false;
 		}
-
 
         /**
          * 检查cookie确认是否存在用户信息

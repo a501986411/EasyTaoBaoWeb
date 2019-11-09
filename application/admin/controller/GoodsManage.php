@@ -27,7 +27,7 @@ class GoodsManage extends App
     {
         $logic = new GoodsManageLogic(new GoodsRelation());
         $logic->setPageInfo(input('get.page',1), input('get.limit'));
-        $where['uid'] = ['eq', $this->userInfo['id']];
+        $where['store_id'] = ['eq', $this->nowStoreInfo['id']];
         if(input('?get.title')){
             $title = input('get.title');
             if($title){

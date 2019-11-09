@@ -13,10 +13,12 @@
 	class App extends Controller
 	{
 	    protected $userInfo;
+	    protected $nowStoreInfo;
 		private $menuId;
 		protected $beforeActionList = [
 		    'interceptor' ,//拦截器
             'setUserInfo', //设置登录用户信息
+            'setNowStore', //设置当前店铺信息
         ];
 
 
@@ -28,6 +30,10 @@
 		protected function setUserInfo()
         {
             $this->userInfo = json_decode(cookie('user'),true);
+        }
+        protected function setNowStore()
+        {
+            $this->nowStoreInfo = json_decode(cookie('now_store'),true);
         }
         /**
          * 访问拦截器
