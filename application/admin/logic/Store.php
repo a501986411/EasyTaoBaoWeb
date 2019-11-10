@@ -46,15 +46,27 @@ class Store extends BaseLogic
 
     public function setNowStore($uid, $store_id = 0)
     {
-        if($store_id) {
+        if ($store_id) {
             $where['id'] = ['eq', $store_id];
-        }else{
+        } else {
             $where['is_default'] = ['eq', \app\admin\model\Store::IS_DEFAULT_YES];
         }
         $where['uid'] = ['eq', $uid];
-        $nowStore =  $this->model->scope('IsDeleteNo')->where($where)->find()->toArray();
-        cookie('now_store',json_encode($nowStore,JSON_UNESCAPED_UNICODE),0);
+        $nowStore = $this->model->scope('IsDeleteNo')->where($where)->find()->toArray();
+        cookie('now_store', json_encode($nowStore, JSON_UNESCAPED_UNICODE), 0);
         return true;
+    }
+
+    /**
+     * 该用户是否设置店铺
+     * @param $uid
+     * @return int|string
+     */
+    public function isExistStore($uid)
+    {
+        $where['uid'] = ['eq', $uid];
+        $storeNum = $this->model->scope('IsDeleteNo')->where($where)->count();
+        return $storeNum;
     }
 
 }

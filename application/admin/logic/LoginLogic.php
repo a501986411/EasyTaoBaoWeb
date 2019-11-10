@@ -42,7 +42,11 @@
 				cookie('user',json_encode($userInfo,JSON_UNESCAPED_UNICODE));
 				//设置当前的店铺
                 $storeLogic = new Store();
-                $storeLogic->setNowStore($userInfo['id']);
+                if($storeLogic->isExistStore($userInfo['id'])){
+                    $storeLogic->setNowStore($userInfo['id']);
+                }else{
+                    echo "<script>top.document.location.href='/FirstLogin/firstSetStore';</script>";
+                }
 				return true;
 			}
 			return false;

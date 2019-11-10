@@ -30,6 +30,7 @@ class Store extends Base
     protected function setIsDefaultAttr($value)
     {
         if($value){
+            $this->where("uid",'=', $this->userInfo['id'])->update(['is_default'=>0]);
             return $value;
         }
         return self::IS_DEFAULT_NO;
@@ -44,4 +45,5 @@ class Store extends Base
     public function scopeIsDeleteNo($query){
         $query->where('is_delete',self::IS_DELETE_NO);
     }
+
 }

@@ -126,4 +126,7 @@ ADD INDEX `idx_store_id` (`store_id`) ;
 ALTER TABLE `etb_goods`
 ADD COLUMN `store_id`  int(11) NOT NULL DEFAULT 0 COMMENT '店铺id' AFTER `cover_img`;
 
+INSERT INTO `easy_taobao`.`etb_admin_menu` (`id`, `pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('17', '0', '店铺管理', '', '3', '1', '', '1');
+INSERT INTO `easy_taobao`.`etb_admin_menu` (`id`, `pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('18', '17', '我的店铺', '/Store/index', '1', '1', '', '1');
+
 
