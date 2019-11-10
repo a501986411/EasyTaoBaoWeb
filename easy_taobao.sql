@@ -104,6 +104,20 @@ ALTER TABLE `etb_goods_log`
 MODIFY COLUMN `monthly_sales`  varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '月销量或者30天内销量' AFTER `title`;
 
 #store
+CREATE TABLE `etb_store` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
+  `name` varchar(60) NOT NULL,
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '店铺新品列表url',
+  `remark` text NOT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `is_default` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否默认店铺',
+  PRIMARY KEY (`id`),
+  KEY `idx_uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户店铺信息';
+
 ALTER TABLE `etb_goods_relation`
 ADD COLUMN `store_id`  int(11) NOT NULL DEFAULT 0,
 ADD INDEX `idx_uid` (`uid`) ,
