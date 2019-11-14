@@ -69,6 +69,7 @@
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"> 新增</button>
+        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delData"> 删除</button>
     </div>
 </script>
 <script>
@@ -93,17 +94,19 @@
         var layer = layui.layer;
         var form = layui.form;
         table.render({
+            id:"track_goods_tb",
             elem: '#track_goods_tb',
             height: 'full-200',
             url: '/GoodsManage/getList/',
             page: true,
             loading:true,
             even:true,
-            skin:'line',
+            // skin:'line',
             toolbar:'#toolbar',
             limit: 100,
             limits:[100,200,300,500],
             cols: [[ //表头
+                {field:'id',type:"checkbox",width:40,align:"left"},
                 {field:'cover_img',title:'首图',align:'center',templet:function(d){
                     if(d.cover_img == ''){
                         return d.cover_img;
@@ -160,6 +163,23 @@
                     case 'addData':
                         xadmin.open('添加跟踪商品',"{:url('/GoodsManage/showEdit')}",500,350);
                         break;
+                    case "delData":
+                        var checkStatus = table.checkStatus('track_goods_tb');
+                        var ids = [];
+                        $.each(checkStatus.data,function (k,v) {
+                            ids.push(v.id);
+                        })
+                        layer.confirm('确定删除', {icon: 3, title:'提示'}, function(index){
+                            $.post("{:url('/GoodsManage/delData')}",{data:JSON.stringify(ids)},function (res) {
+                                layer.alert(res.msg, {icon: 6},function() {
+                                    if(res.success){
+                                        xadmin.father_reload();
+                                    }
+                                });
+                            })
+                            layer.close(index);
+                        })
+
                 };
         });
         //监听行双击事件

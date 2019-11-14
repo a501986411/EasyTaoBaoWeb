@@ -102,8 +102,8 @@ class GoodsManage extends App
 
     public function delData()
     {
-        if(Request::instance()->has('pkArr')){
-            $delPk = json_decode(input('post.pkArr'),true);
+        if(Request::instance()->has('data')){
+            $delPk = json_decode(input('post.data'),true);
             $goodsRelationMdl = new GoodsRelation();
             $result = $goodsRelationMdl->where('id','in', $delPk)->delete();
             if($result===false){
@@ -119,6 +119,7 @@ class GoodsManage extends App
     {
         return view('edit');
     }
+
 
 
 }
