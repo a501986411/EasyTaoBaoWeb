@@ -72,14 +72,15 @@
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="{$menu.name}">&#xe6b8;</i>
                     <cite>{$menu.name}</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
                 {notempty name="menu.child"}
                 <ul class="sub-menu">
                     {foreach $menu.child  as $child_menu}
                     <li>
-                        <a onclick="xadmin.add_tab('{$child_menu.name}','{$child_menu.url}')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>{$child_menu.name}</cite></a>
+                        <a onclick="xadmin.add_tab('{$child_menu.name}','{$child_menu.url}');">
+                            <cite>{$child_menu.name}</cite>
+                        </a>
                     </li>
                     {/foreach}
                 </ul>

@@ -129,4 +129,6 @@ ADD COLUMN `store_id`  int(11) NOT NULL DEFAULT 0 COMMENT '店铺id' AFTER `cove
 INSERT INTO `easy_taobao`.`etb_admin_menu` (`id`, `pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('17', '0', '店铺管理', '', '3', '1', '', '1');
 INSERT INTO `easy_taobao`.`etb_admin_menu` (`id`, `pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('18', '17', '我的店铺', '/Store/index', '1', '1', '', '1');
 
+#关注店铺功能
+INSERT INTO `easy_taobao`.`etb_admin_menu` (`pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('17', '关注的店铺', '/FollowStore/index', '2', '1', '', '1');
 

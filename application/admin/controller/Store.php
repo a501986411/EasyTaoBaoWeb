@@ -8,11 +8,19 @@ use think\Request;
 
 class Store extends App
 {
+    /**
+     * 我的店铺列表页面
+     * @return \think\response\View
+     */
     public function index()
     {
         return view();
     }
 
+    /**
+     * 获取我的店铺列表
+     * @return array
+     */
     public function getList()
     {
         $where['uid'] = ['eq',$this->userInfo['id']];
@@ -21,11 +29,19 @@ class Store extends App
         return $logic->getList($where);
     }
 
+    /**
+     * 查看店铺详情
+     * @return \think\response\View
+     */
     public function showEdit()
     {
         return view('edit');
     }
 
+    /**
+     * 保存店铺信息
+     * @return array
+     */
     public function save()
     {
        $logic = new StoreLg();
@@ -33,6 +49,10 @@ class Store extends App
        return $result;
     }
 
+    /**
+     * 设置当前店铺
+     * @return array|void
+     */
     public function setNowStore()
     {
         $storeId = input('store_id');
