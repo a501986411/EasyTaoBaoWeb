@@ -131,4 +131,16 @@ INSERT INTO `easy_taobao`.`etb_admin_menu` (`id`, `pid`, `name`, `url`, `sort`, 
 
 #关注店铺功能
 INSERT INTO `easy_taobao`.`etb_admin_menu` (`pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('17', '关注的店铺', '/FollowStore/index', '2', '1', '', '1');
+CREATE TABLE `etb_follow_store` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(60) NOT NULL,
+  `domain` varchar(255) NOT NULL DEFAULT '' COMMENT '店铺域名地址',
+  `spm` varchar(255) NOT NULL DEFAULT '' COMMENT 'spm参数值',
+  `remark` text NOT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='被用户添加的店铺';
+
 
