@@ -132,15 +132,32 @@ INSERT INTO `easy_taobao`.`etb_admin_menu` (`id`, `pid`, `name`, `url`, `sort`, 
 #关注店铺功能
 INSERT INTO `easy_taobao`.`etb_admin_menu` (`pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('17', '关注的店铺', '/FollowStore/index', '2', '1', '', '1');
 CREATE TABLE `etb_follow_store` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` bigint(16) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '淘宝天猫网店铺id',
   `name` varchar(60) NOT NULL,
   `domain` varchar(255) NOT NULL DEFAULT '' COMMENT '店铺域名地址',
   `spm` varchar(255) NOT NULL DEFAULT '' COMMENT 'spm参数值',
   `remark` text NOT NULL COMMENT '备注',
+  `seller_id` bigint(16) unsigned NOT NULL DEFAULT '0' COMMENT '店铺所属用户id',
+  `last_crawl_time` int(11) NOT NULL DEFAULT '0' COMMENT '最后一次爬取时间',
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '添加用户id',
+  `type` tinyint(11) NOT NULL DEFAULT '0' COMMENT '店铺类型；1：淘宝，2：天猫',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='被用户添加的店铺';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='被用户添加的店铺';
+
+CREATE TABLE `etb_user_store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `follow_store_id` int(11) NOT NULL DEFAULT '0' COMMENT '关注店铺id',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_follow` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否关注；1：已关注，2：已取消关注',
+  PRIMARY KEY (`id`),
+  KEY `idx_uid` (`uid`) COMMENT '用户id索引'
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='用户 关注店铺关系表';
+
 
 
