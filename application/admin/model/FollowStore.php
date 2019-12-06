@@ -14,6 +14,7 @@ class FollowStore extends Base
         self::TYPE_TM => '天猫'
     ];
     protected $insert = ['remark', 'uid', 'type'];
+    protected $auto = ['domain'];
     protected function setRemarkAttr($value)
     {
         if($value){
@@ -24,6 +25,7 @@ class FollowStore extends Base
 
     protected function setTypeAttr($value, $data)
     {
+        return self::TYPE_TM;
         if(strpos( $data['domain'],self::TYPE_KEY_WORDS)){
             return self::TYPE_TM;
         }
@@ -36,6 +38,11 @@ class FollowStore extends Base
             return $this->userInfo['id'];
         }
         return $value;
+    }
+    protected function setDomainAttr($value,$data)
+    {
+        //默认是天猫
+        return "https://" . $data['unique_key'] . ".m.tmall.com";
     }
 
 }

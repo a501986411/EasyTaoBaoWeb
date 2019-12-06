@@ -69,6 +69,7 @@ class UserStore extends BaseLogic
             $row['is_follow_text'] = $this->isFollowText[$row['is_follow']];
             $row['name'] = $storeInfo[$row['follow_store_id']]['name'];
             $row['domain'] = $storeInfo[$row['follow_store_id']]['domain'];
+            $row['unique_key'] = $storeInfo[$row['follow_store_id']]['unique_key'];
         }
         return $this->getPageList($data,$total);
     }

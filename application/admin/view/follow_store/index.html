@@ -61,11 +61,12 @@
             limits:[10,20,30,40],
             cols: [[ //表头
                 {field:'name',title:'店铺名称',align:'center'},
-                {field:'domain',title:'域名',align:'center',templet:function(d){
+                {field:'unique_key',title:'店铺标识',align:'center'},
+                {field:'domain',title:'新品列表地址',align:'center',templet:function(d){
                         if(d.domain == ''){
                             return d.domain;
                         }
-                        return '<a target="_blank" title="点击默认进入首页" style="text-decoration:underline;" href="'+d.domain+'">点击进入店铺</a>';
+                        return '<a target="_blank" title="点击默认进入新品列表" style="text-decoration:underline;" href="'+d.domain+'">点击进入店铺</a>';
                     }},
                 {field:'is_follow_text',title:'是否关注',align:'center'},
             ]]
