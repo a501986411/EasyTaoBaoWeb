@@ -85,33 +85,6 @@
                     break;
             };
         });
-        //监听行双击事件
-        table.on('rowDouble(store_tb)', function(obj){
-            var index = layer.open({
-                title:'编辑店铺',
-                type: 2,
-                content:"{:url('/Store/showEdit')}",
-                area: ['500px', '300px'],
-                success:function (layero, index) {
-                    $form = layer.getChildFrame('form',index);
-                    $.each(obj.data,function(k,v){
-                        var $obj = $form.find("[name="+k+"]");
-                        if($obj.length > 0){
-                            if($obj.attr('type') == "checkbox"){
-                                if(v == 1){
-                                    $obj.next('div').addClass('layui-form-onswitch');
-                                    $obj.next('div').find('em').text('是')
-                                    $obj.attr('checked',"checked")
-                                }
-                            }else{
-                                $obj.val(v);
-                            }
-                        }
-                    });
-                }
-            });
-        });
-
     });
 </script>
 </html>
