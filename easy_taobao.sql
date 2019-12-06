@@ -159,5 +159,16 @@ CREATE TABLE `etb_user_store` (
   KEY `idx_uid` (`uid`) COMMENT '用户id索引'
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='用户 关注店铺关系表';
 
-
+CREATE TABLE `etb_follow_store_goods` (
+  `goods_id` varchar(64) NOT NULL DEFAULT '' COMMENT '商品id',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '商品详情销售详情页面地址',
+  `detail_url` varchar(255) NOT NULL DEFAULT '' COMMENT '淘宝商品详情页url',
+  `monthly_sales` varchar(30) DEFAULT '' COMMENT '月销量',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `cover_img` varchar(255) NOT NULL DEFAULT '' COMMENT '首图地址',
+  `shop_id` bigint(16) NOT NULL DEFAULT '0' COMMENT '所属店铺id',
+  `seller_id` bigint(16) NOT NULL DEFAULT '0' COMMENT '所属用户id',
+  PRIMARY KEY (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='淘宝商品与详情页面url关系表';
 
