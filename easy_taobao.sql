@@ -172,3 +172,8 @@ CREATE TABLE `etb_follow_store_goods` (
   PRIMARY KEY (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='淘宝商品与详情页面url关系表';
 
+ALTER TABLE `etb_goods`
+ADD COLUMN `shop_id`  bigint(16) NOT NULL DEFAULT 0 COMMENT '淘宝店铺id',
+ADD COLUMN `seller_id`  bigint(16) NOT NULL DEFAULT 0 COMMENT '淘宝用户id';
+
+
