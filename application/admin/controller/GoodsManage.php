@@ -64,6 +64,7 @@ class GoodsManage extends App
         $logic = new UserStore();
         $wh['a.uid'] = ['eq',$this->userInfo['id']];
         $shopIds = $logic->getFollowStoreShopIds($wh);
+        $shopIds = array_diff($shopIds,[0]);
         $where['shop_id'] = ['in', $shopIds];
         $logic = new \app\admin\logic\GoodsLogic();
         $logic->setPageInfo(input('get.page',1), input('get.limit'));
