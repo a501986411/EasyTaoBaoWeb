@@ -145,8 +145,9 @@ CREATE TABLE `etb_follow_store` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `unique_key` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺唯一标识',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='被用户添加的店铺';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='被用户添加的店铺';
 
 CREATE TABLE `etb_user_store` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
