@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8"/>
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}/css/font.css">
+    <link rel="stylesheet" href="{$Think.const.STATIC_PATH}/css/xadmin.css">
+    <script src="{$Think.const.STATIC_PATH}/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="{$Think.const.STATIC_PATH}/js/xadmin.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<style>
+    .layui-table-cell {
+        height: auto;
+        line-height: 25px;
+    }
+
+</style>
+<body>
+<div class="x-nav" style="padding: 0 10px 0 2px;">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a><cite>热销商品</cite></a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid" style="padding: 2px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="title" placeholder="店铺名称"  autocomplete="off" class="layui-input">
+                        </div>
+                        <!--                        <div class="layui-input-inline layui-show-xs-block">-->
+                        <!--                            <select name="title_is_change">-->
+                        <!--                                <option value="">标题变化筛选</option>-->
+                        <!--                                <option value="1">已改变</option>-->
+                        <!--                                <option value="2">未改变</option>-->
+                        <!--                            </select>-->
+                        <!--                        </div>-->
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="sreach">
+                                <i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table" id="track_goods_tb" lay-filter="track_goods_tb">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/html" id="toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addData"> 新增</button>
+        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delData"> 删除</button>
+    </div>
+</script>
+<script>
+    function showSaleLog(goodsId) {
+        layui.use(['table','layer','form'],function () {
+            var layer = layui.layer;
+            var index = layer.open({
+                title:'24小时销量记录',
+                type: 2,
+                content:"{:url('/GoodsManage/showSaleLog')}",
+                area: ['800px', '400px'],
+                success:function (layero, index) {
+                    $body = layer.getChildFrame('body', index);
+                    $body.find("#goods_id").val(goodsId);
+                }
+            });
+        });
+
+    }
+    layui.use(['table','layer','form'],function () {
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+        table.render({
+            id:"track_goods_tb",
+            elem: '#track_goods_tb',
+            height: 'full-200',
+            url: '/GoodsManage/getHotsList/',
+            page: true,
+            loading:true,
+            even:true,
+            // skin:'line',
+            toolbar:'#toolbar',
+            limit: 100,
+            limits:[100,200,300,500],
+            cols: [[ //表头
+                {field:'id',type:"checkbox",width:40,align:"left"},
+                {field:'shop_name',title:'店铺名称',align:'center',sort:true},
+                {field:'cover_img',title:'首图',align:'center',templet:function(d){
+                        if(d.cover_img == ''){
+                            return d.cover_img;
+                        }
+                        return '<img src="'+d.cover_img+'_60x60.jpg">';
+                    }},
+                {field:'title',title:'商品标题',align:'center',templet:function(d){
+                        if(d.title == ''){
+                            return d.title ;
+                        }
+                        return '<a target="_blank" href="'+d.detail_url+'">'+d.title+'</a>';
+                    }},
+                {field:'yesterday_sales',title:'昨日销量',align:'center',templet:function(d){
+                        if(d.yesterday_sales == -1){
+                            return '无数据';
+                        }
+                        return d.yesterday_sales;
+                    }},
+                {field:'monthly_sales',title:'当前销量',align:'center',sort:true},
+                {field:'sales_diff',title:'销量差异',align:'center',sort:true,templet:function(d){
+                        if(d.yesterday_sales == -1){
+                            return '无数据';
+                        }
+                        if(d.sales_diff > 0){
+                            return '+'+d.sales_diff;
+                        }
+                        return d.sales_diff;
+                    }},
+                {field:'show_sales_log',title:'24小时销量记录',align:'center',templet:function(d){
+                        return '<button type="button" class="btn btn-success" onclick="showSaleLog('+d.goods_id+')">查看</button>';
+                    }},
+                {field:'update_time',title:'数据更新时间',align:'center',sortable:true},
+            ]]
+        });
+        form.on('submit(sreach)',
+            function(data) {
+                table.reload('track_goods_tb', {
+                    where:data.field
+                });
+                return false;
+            });
+        //头工具栏事件
+        table.on('toolbar(track_goods_tb)',function(obj) {
+            switch (obj.event) {
+                case 'addData':
+                    xadmin.open('添加跟踪商品',"{:url('/GoodsManage/showEdit')}",500,350);
+                    break;
+                case "delData":
+                    var checkStatus = table.checkStatus('track_goods_tb');
+                    var ids = [];
+                    $.each(checkStatus.data,function (k,v) {
+                        ids.push(v.id);
+                    })
+                    layer.confirm('确定删除', {icon: 3, title:'提示'}, function(index){
+                        $.post("{:url('/GoodsManage/delData')}",{data:JSON.stringify(ids)},function (res) {
+                            layer.alert(res.msg, {icon: 6},function() {
+                                if(res.success){
+                                    xadmin.father_reload();
+                                }
+                            });
+                        })
+                        layer.close(index);
+                    })
+
+            };
+        });
+        //监听行双击事件
+        table.on('rowDouble(track_goods_tb)', function(obj){
+            var index = layer.open({
+                title:'编辑跟踪商品',
+                type: 2,
+                content:"{:url('/GoodsManage/showEdit')}",
+                area: ['500px', '300px'],
+                success:function (layero, index) {
+                    $form = layer.getChildFrame('form',index);
+                    $.each(obj.data,function(k,v){
+                        var $obj = $form.find("[name="+k+"]");
+                        $obj.each(function(k1,v1){
+                            if($obj != 'undefine'){
+                                $(this).val(v);
+                                return false;
+                            }
+                        });
+                    });
+                }
+            });
+        });
+        //排序事件监听
+        // table.on('sort(track_goods_tb)', function(obj){
+        //     table.reload('track_goods_tb', {
+        //         initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+        //         ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+        //             field: obj.field //排序字段
+        //             ,order: obj.type //排序方式
+        //         }
+        //     });
+        // });
+    });
+</script>
+</html>

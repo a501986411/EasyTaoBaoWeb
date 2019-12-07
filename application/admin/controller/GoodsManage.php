@@ -7,6 +7,7 @@ namespace app\admin\controller;
 use app\admin\logic\BaseLogic;
 use app\admin\logic\GoodsLogLogic;
 use app\admin\logic\GoodsManageLogic;
+use app\admin\logic\UserStore;
 use app\admin\model\Goods;
 use app\admin\model\GoodsLog;
 use app\admin\model\GoodsRelation;
@@ -18,6 +19,11 @@ class GoodsManage extends App
     public function index()
     {
         return view('list');
+    }
+
+    public function hots()
+    {
+        return view();
     }
 
     /**
@@ -40,6 +46,32 @@ class GoodsManage extends App
             $titleIsChange = input('get.title_is_change');
             if($titleIsChange){
                 $where['title_is_change'] = ['eq',($titleIsChange-1)];
+            }
+        }
+        $data = $logic->getList($where);
+        return $data;
+    }
+
+    /**
+     * 获取热销商品列表
+     * @return array|false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getHotsList()
+    {
+        $logic = new UserStore();
+        $wh['a.uid'] = ['eq',$this->userInfo['id']];
+        $shopIds = $logic->getFollowStoreShopIds($wh);
+        $where['shop_id'] = ['in', $shopIds];
+        $logic = new \app\admin\logic\GoodsLogic();
+        $logic->setPageInfo(input('get.page',1), input('get.limit'));
+        $logic->order = ['monthly_sales'=>'desc'];
+        if(input('?get.title')){
+            $title = input('get.title');
+            if($title){
+                $where['title'] = ['like', $title];
             }
         }
         $data = $logic->getList($where);

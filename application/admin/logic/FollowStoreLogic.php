@@ -55,4 +55,13 @@ class FollowStoreLogic extends BaseLogic
         $store = $this->model->scope('IsDeleteNo')->where('id','in', $storeIdArr)->select();
         return $store;
     }
+
+    public function getStoreInfoByWh($where)
+    {
+        if(empty($where)){
+            return [];
+        }
+        $store = $this->model->scope('IsDeleteNo')->where($where)->select();
+        return $store;
+    }
 }

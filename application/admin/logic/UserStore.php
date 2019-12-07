@@ -74,4 +74,12 @@ class UserStore extends BaseLogic
         return $this->getPageList($data,$total);
     }
 
+    public function getFollowStoreShopIds($where)
+    {
+        $data = $this->model->alias('a')
+            ->join('etb_follow_store b','a.follow_store_id = b.id','left')
+            ->where($where)->column("shop_id");
+        return $data;
+    }
+
 }

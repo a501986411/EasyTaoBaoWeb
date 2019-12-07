@@ -177,4 +177,6 @@ ALTER TABLE `etb_goods`
 ADD COLUMN `shop_id`  bigint(16) NOT NULL DEFAULT 0 COMMENT '淘宝店铺id',
 ADD COLUMN `seller_id`  bigint(16) NOT NULL DEFAULT 0 COMMENT '淘宝用户id';
 
+#热销商品列表
+INSERT INTO `easy_taobao`.`etb_admin_menu` (`pid`, `name`, `url`, `sort`, `status`, `path`, `is_update_status`) VALUES ('15', '热销商品', '/GoodsManage/hots', '1', '1', '', '1');
 
