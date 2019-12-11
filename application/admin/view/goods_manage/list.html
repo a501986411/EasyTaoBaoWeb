@@ -73,19 +73,19 @@
 </script>
 <script>
     function showSaleLog(goodsId) {
-        layui.use(['table','layer','form'],function () {
-            var layer = layui.layer;
-            var index = layer.open({
-                title:'24小时销量记录',
-                type: 2,
-                content:"{:url('/GoodsManage/showSaleLog')}",
-                area: ['800px', '400px'],
-                success:function (layero, index) {
-                    $body = layer.getChildFrame('body', index);
-                    $body.find("#goods_id").val(goodsId);
-                }
-            });
-        });
+        // layui.use(['table','layer','form'],function () {
+        //     var layer = layui.layer;
+        //     var index = layer.open({
+        //         title:'24小时销量记录',
+        //         type: 2,
+        //         content:"{:url('/GoodsManage/showSaleLog')}",
+        //         area: ['800px', '400px'],
+        //         success:function (layero, index) {
+        //             $body = layer.getChildFrame('body', index);
+        //             $body.find("#goods_id").val(goodsId);
+        //         }
+        //     });
+        // });
     }
     layui.use(['table','layer','form'],function () {
         // var table = layui.table;
