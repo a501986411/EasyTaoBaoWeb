@@ -23,41 +23,41 @@
     }
 
 </style>
-<!--<body>-->
-<!--<div class="x-nav" style="padding: 0 10px 0 2px;">-->
-<!--            <span class="layui-breadcrumb">-->
-<!--                <a href="">首页</a>-->
-<!--                <a><cite>商品跟踪</cite></a>-->
-<!--            </span>-->
-<!--    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">-->
-<!--        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>-->
-<!--    </a>-->
-<!--</div>-->
-<!--<div class="layui-fluid" style="padding: 2px;">-->
-<!--    <div class="layui-row layui-col-space15">-->
-<!--        <div class="layui-col-md12">-->
-<!--            <div class="layui-card">-->
-<!--                <div class="layui-card-body ">-->
-<!--                    <form class="layui-form layui-col-space5">-->
-<!--                        <div class="layui-inline layui-show-xs-block">-->
-<!--                            <input type="text" name="title" placeholder="请输商品标题"  autocomplete="off" class="layui-input">-->
-<!--                        </div>-->
-<!--                        <div class="layui-inline layui-show-xs-block">-->
-<!--                            <button class="layui-btn" lay-submit="" lay-filter="sreach">-->
-<!--                                <i class="layui-icon">&#xe615;</i></button>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--                <div class="layui-card-body ">-->
-<!--                    <table class="layui-table" id="track_goods_tb" lay-filter="track_goods_tb">-->
+<body>
+<div class="x-nav" style="padding: 0 10px 0 2px;">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a><cite>商品跟踪</cite></a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid" style="padding: 2px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="title" placeholder="请输商品标题"  autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="sreach">
+                                <i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table" id="track_goods_tb" lay-filter="track_goods_tb">
 
-<!--                    </table>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--</body>-->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"> 新增</button>
@@ -80,7 +80,7 @@
         //     });
         // });
     }
-    layui.use(['table','layer','form'],function () {
+    // layui.use(['table','layer','form'],function () {
         // var table = layui.table;
         // var layer = layui.layer;
         // var form = layui.form;
@@ -204,6 +204,6 @@
         //         }
         //     });
         // });
-    });
+    // });
 </script>
 </html>
