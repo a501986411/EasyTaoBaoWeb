@@ -66,144 +66,144 @@
 </script>
 <script>
     function showSaleLog(goodsId) {
-        // layui.use(['table','layer','form'],function () {
-        //     var layer = layui.layer;
-        //     var index = layer.open({
-        //         title:'24小时销量记录',
-        //         type: 2,
-        //         content:"{:url('/GoodsManage/showSaleLog')}",
-        //         area: ['800px', '400px'],
-        //         success:function (layero, index) {
-        //             $body = layer.getChildFrame('body', index);
-        //             $body.find("#goods_id").val(goodsId);
-        //         }
-        //     });
-        // });
+        layui.use(['layer'],function () {
+            var layer = layui.layer;
+            var index = layer.open({
+                title:'24小时销量记录',
+                type: 2,
+                content:"{:url('/GoodsManage/showSaleLog')}",
+                area: ['800px', '400px'],
+                success:function (layero, index) {
+                    $body = layer.getChildFrame('body', index);
+                    $body.find("#goods_id").val(goodsId);
+                }
+            });
+        });
     }
-    // layui.use(['table','layer','form'],function () {
-        // var table = layui.table;
-        // var layer = layui.layer;
-        // var form = layui.form;
-        // table.render({
-        //     id:"track_goods_tb",
-        //     elem: '#track_goods_tb',
-        //     height: 'full-200',
-        //     url: '/GoodsManage/getList/',
-        //     page: true,
-        //     loading:true,
-        //     even:true,
-        //     // skin:'line',
-        //     toolbar:'#toolbar',
-        //     limit: 100,
-        //     limits:[100,200,300,500],
-        //     cols: [[ //表头
-        //         {field:'id',type:"checkbox",width:40,align:"left"},
-        //         {field:'cover_img',title:'首图',align:'center',templet:function(d){
-        //             if(d.cover_img == ''){
-        //                 return d.cover_img;
-        //             }
-        //             return '<img src="'+d.cover_img+'_60x60.jpg">';
-        //         }},
-        //         {field:'own_goods_id',title:'自己商品ID',align:'center'},
-        //         {field:'other_goods_id',title:'跟踪商品ID',align:'center'},
-        //         {field:'title_is_change_text',title:'标题是否改变',align:'center',sort:true},
-        //         {field:'own_title',title:'自己商品标题',align:'center',templet:function(d){
-        //                 if(d.own_title == ''){
-        //                     return d.own_title ;
-        //                 }
-        //                 return '<a target="_blank" href="'+d.own_goods_url+'">'+d.own_title+'</a>';
-        //             }},
-        //         {field:'other_title',title:'跟踪商品标题',align:'center',templet:function(d){
-        //                 if(d.other_title == ''){
-        //                     return d.other_title;
-        //                 }
-        //                 return '<a target="_blank" href="'+d.other_goods_url+'">'+d.other_title+'</a>';
-        //             }},
-        //         {field:'yesterday_sales',title:'昨日销量',align:'center',templet:function(d){
-        //                 if(d.yesterday_sales == -1){
-        //                     return '无数据';
-        //                 }
-        //                 return d.yesterday_sales;
-        //             }},
-        //         {field:'monthly_sales',title:'当前销量',align:'center',sort:true},
-        //         {field:'sales_diff',title:'销量差异',align:'center',sort:true,templet:function(d){
-        //                 if(d.yesterday_sales == -1){
-        //                     return '无数据';
-        //                 }
-        //                if(d.sales_diff > 0){
-        //                    return '+'+d.sales_diff;
-        //                }
-        //                return d.sales_diff;
-        //             }},
-        //         {field:'show_sales_log',title:'24小时销量记录',align:'center',templet:function(d){
-        //                 return '<button type="button" class="btn btn-success" onclick="showSaleLog('+d.other_goods_id+')">查看</button>';
-        //             }},
-        //         {field:'other_update_time',title:'数据更新时间',align:'center',sortable:true},
-        //     ]]
-        // });
-        // form.on('submit(sreach)',
-        //     function(data) {
-        //         table.reload('track_goods_tb', {
-        //             where:data.field
-        //         });
-        //         return false;
-        //     });
-        // //头工具栏事件
-        // table.on('toolbar(track_goods_tb)',function(obj) {
-        //         switch (obj.event) {
-        //             case 'addData':
-        //                 xadmin.open('添加跟踪商品',"{:url('/GoodsManage/showEdit')}",500,350);
-        //                 break;
-        //             case "delData":
-        //                 var checkStatus = table.checkStatus('track_goods_tb');
-        //                 var ids = [];
-        //                 $.each(checkStatus.data,function (k,v) {
-        //                     ids.push(v.id);
-        //                 })
-        //                 layer.confirm('确定删除', {icon: 3, title:'提示'}, function(index){
-        //                     $.post("{:url('/GoodsManage/delData')}",{data:JSON.stringify(ids)},function (res) {
-        //                         layer.alert(res.msg, {icon: 6},function() {
-        //                             if(res.success){
-        //                                 xadmin.father_reload();
-        //                             }
-        //                         });
-        //                     })
-        //                     layer.close(index);
-        //                 })
-        //
-        //         };
-        // });
-        // //监听行双击事件
-        // table.on('rowDouble(track_goods_tb)', function(obj){
-        //     var index = layer.open({
-        //         title:'编辑跟踪商品',
-        //         type: 2,
-        //         content:"{:url('/GoodsManage/showEdit')}",
-        //         area: ['500px', '300px'],
-        //         success:function (layero, index) {
-        //             $form = layer.getChildFrame('form',index);
-        //             $.each(obj.data,function(k,v){
-        //                 var $obj = $form.find("[name="+k+"]");
-        //                 $obj.each(function(k1,v1){
-        //                     if($obj != 'undefine'){
-        //                         $(this).val(v);
-        //                         return false;
-        //                     }
-        //                 });
-        //             });
-        //         }
-        //     });
-        // });
-        //排序事件监听
-        // table.on('sort(track_goods_tb)', function(obj){
-        //     table.reload('track_goods_tb', {
-        //         initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-        //         ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-        //             field: obj.field //排序字段
-        //             ,order: obj.type //排序方式
-        //         }
-        //     });
-        // });
-    // });
+    layui.use(['table','layer','form'],function () {
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+        table.render({
+            id:"track_goods_tb",
+            elem: '#track_goods_tb',
+            height: 'full-200',
+            url: '/GoodsManage/getList/',
+            page: true,
+            loading:true,
+            even:true,
+            // skin:'line',
+            toolbar:'#toolbar',
+            limit: 100,
+            limits:[100,200,300,500],
+            cols: [[ //表头
+                {field:'id',type:"checkbox",width:40,align:"left"},
+                {field:'cover_img',title:'首图',align:'center',templet:function(d){
+                    if(d.cover_img == ''){
+                        return d.cover_img;
+                    }
+                    return '<img src="'+d.cover_img+'_60x60.jpg">';
+                }},
+                {field:'own_goods_id',title:'自己商品ID',align:'center'},
+                {field:'other_goods_id',title:'跟踪商品ID',align:'center'},
+                {field:'title_is_change_text',title:'标题是否改变',align:'center',sort:true},
+                {field:'own_title',title:'自己商品标题',align:'center',templet:function(d){
+                        if(d.own_title == ''){
+                            return d.own_title ;
+                        }
+                        return '<a target="_blank" href="'+d.own_goods_url+'">'+d.own_title+'</a>';
+                    }},
+                {field:'other_title',title:'跟踪商品标题',align:'center',templet:function(d){
+                        if(d.other_title == ''){
+                            return d.other_title;
+                        }
+                        return '<a target="_blank" href="'+d.other_goods_url+'">'+d.other_title+'</a>';
+                    }},
+                {field:'yesterday_sales',title:'昨日销量',align:'center',templet:function(d){
+                        if(d.yesterday_sales == -1){
+                            return '无数据';
+                        }
+                        return d.yesterday_sales;
+                    }},
+                {field:'monthly_sales',title:'当前销量',align:'center',sort:true},
+                {field:'sales_diff',title:'销量差异',align:'center',sort:true,templet:function(d){
+                        if(d.yesterday_sales == -1){
+                            return '无数据';
+                        }
+                       if(d.sales_diff > 0){
+                           return '+'+d.sales_diff;
+                       }
+                       return d.sales_diff;
+                    }},
+                {field:'show_sales_log',title:'24小时销量记录',align:'center',templet:function(d){
+                        return '<button type="button" class="btn btn-success" onclick="showSaleLog('+d.other_goods_id+')">查看</button>';
+                    }},
+                {field:'other_update_time',title:'数据更新时间',align:'center',sortable:true},
+            ]]
+        });
+        form.on('submit(sreach)',
+            function(data) {
+                table.reload('track_goods_tb', {
+                    where:data.field
+                });
+                return false;
+            });
+        //头工具栏事件
+        table.on('toolbar(track_goods_tb)',function(obj) {
+                switch (obj.event) {
+                    case 'addData':
+                        xadmin.open('添加跟踪商品',"{:url('/GoodsManage/showEdit')}",500,350);
+                        break;
+                    case "delData":
+                        var checkStatus = table.checkStatus('track_goods_tb');
+                        var ids = [];
+                        $.each(checkStatus.data,function (k,v) {
+                            ids.push(v.id);
+                        })
+                        layer.confirm('确定删除', {icon: 3, title:'提示'}, function(index){
+                            $.post("{:url('/GoodsManage/delData')}",{data:JSON.stringify(ids)},function (res) {
+                                layer.alert(res.msg, {icon: 6},function() {
+                                    if(res.success){
+                                        xadmin.father_reload();
+                                    }
+                                });
+                            })
+                            layer.close(index);
+                        })
+
+                };
+        });
+        //监听行双击事件
+        table.on('rowDouble(track_goods_tb)', function(obj){
+            var index = layer.open({
+                title:'编辑跟踪商品',
+                type: 2,
+                content:"{:url('/GoodsManage/showEdit')}",
+                area: ['500px', '300px'],
+                success:function (layero, index) {
+                    $form = layer.getChildFrame('form',index);
+                    $.each(obj.data,function(k,v){
+                        var $obj = $form.find("[name="+k+"]");
+                        $obj.each(function(k1,v1){
+                            if($obj != 'undefine'){
+                                $(this).val(v);
+                                return false;
+                            }
+                        });
+                    });
+                }
+            });
+        });
+       // 排序事件监听
+        table.on('sort(track_goods_tb)', function(obj){
+            table.reload('track_goods_tb', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    ,order: obj.type //排序方式
+                }
+            });
+        });
+    });
 </script>
 </html>
