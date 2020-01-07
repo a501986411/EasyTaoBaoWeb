@@ -41,7 +41,7 @@
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5">
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" name="title" placeholder="店铺名称"  autocomplete="off" class="layui-input">
+                            <input type="text" name="store_name" placeholder="店铺名称"  autocomplete="off" class="layui-input">
                         </div>
                         <!--                        <div class="layui-input-inline layui-show-xs-block">-->
                         <!--                            <select name="title_is_change">-->
@@ -57,7 +57,7 @@
                     </form>
                 </div>
                 <div class="layui-card-body ">
-                    <table class="layui-table" id="track_goods_tb" lay-filter="track_goods_tb">
+                    <table class="layui-table" id="hots_goods_tb" lay-filter="hots_goods_tb">
 
                     </table>
                 </div>
@@ -94,8 +94,8 @@
         var layer = layui.layer;
         var form = layui.form;
         table.render({
-            id:"track_goods_tb",
-            elem: '#track_goods_tb',
+            id:"hots_goods_tb",
+            elem: '#hots_goods_tb',
             height: 'full-200',
             url: '/GoodsManage/getHotsList/',
             page: true,
@@ -104,7 +104,7 @@
             // skin:'line',
             toolbar:'#toolbar',
             limit: 100,
-            limits:[100,200,300,500],
+            limits:[100],
             cols: [[ //表头
                 {field:'id',type:"checkbox",width:40,align:"left"},
                 {field:'shop_name',title:'店铺名称',align:'center',sort:true},
@@ -144,60 +144,14 @@
         });
         form.on('submit(sreach)',
             function(data) {
-                table.reload('track_goods_tb', {
+                table.reload('hots_goods_tb', {
                     where:data.field
                 });
                 return false;
             });
-        //头工具栏事件
-        table.on('toolbar(track_goods_tb)',function(obj) {
-            switch (obj.event) {
-                case 'addData':
-                    xadmin.open('添加跟踪商品',"{:url('/GoodsManage/showEdit')}",500,350);
-                    break;
-                case "delData":
-                    var checkStatus = table.checkStatus('track_goods_tb');
-                    var ids = [];
-                    $.each(checkStatus.data,function (k,v) {
-                        ids.push(v.id);
-                    })
-                    layer.confirm('确定删除', {icon: 3, title:'提示'}, function(index){
-                        $.post("{:url('/GoodsManage/delData')}",{data:JSON.stringify(ids)},function (res) {
-                            layer.alert(res.msg, {icon: 6},function() {
-                                if(res.success){
-                                    xadmin.father_reload();
-                                }
-                            });
-                        })
-                        layer.close(index);
-                    })
-
-            };
-        });
-        //监听行双击事件
-        table.on('rowDouble(track_goods_tb)', function(obj){
-            var index = layer.open({
-                title:'编辑跟踪商品',
-                type: 2,
-                content:"{:url('/GoodsManage/showEdit')}",
-                area: ['500px', '300px'],
-                success:function (layero, index) {
-                    $form = layer.getChildFrame('form',index);
-                    $.each(obj.data,function(k,v){
-                        var $obj = $form.find("[name="+k+"]");
-                        $obj.each(function(k1,v1){
-                            if($obj != 'undefine'){
-                                $(this).val(v);
-                                return false;
-                            }
-                        });
-                    });
-                }
-            });
-        });
         //排序事件监听
-        // table.on('sort(track_goods_tb)', function(obj){
-        //     table.reload('track_goods_tb', {
+        // table.on('sort(hots_goods_tb)', function(obj){
+        //     table.reload('hots_goods_tb', {
         //         initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
         //         ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
         //             field: obj.field //排序字段

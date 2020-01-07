@@ -64,4 +64,22 @@ class FollowStoreLogic extends BaseLogic
         $store = $this->model->scope('IsDeleteNo')->where($where)->select();
         return $store;
     }
+    /**
+     * 根据店铺名称模糊查询店铺id
+     * @param string $name
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getIdsByName($name = "")
+    {
+        if(empty($name)){
+            return [];
+        }
+        $where['name'] = ['like', '%'.$name.'%'];
+        $storeNum = $this->model->scope('IsDeleteNo')->field(['shop_id'])->where($where)->select();
+        return empty($storeNum) ? [] : array_column($storeNum,'shop_id');
+    }
+
 }

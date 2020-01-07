@@ -68,5 +68,4 @@ class Store extends BaseLogic
         $storeNum = $this->model->scope('IsDeleteNo')->where($where)->count();
         return $storeNum;
     }
-
 }

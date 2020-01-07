@@ -69,10 +69,16 @@ class GoodsManage extends App
         $logic = new \app\admin\logic\GoodsLogic();
         $logic->setPageInfo(input('get.page',1), input('get.limit'));
         $logic->order = ['monthly_sales'=>'desc'];
-        if(input('?get.title')){
-            $title = input('get.title');
-            if($title){
-                $where['title'] = ['like', $title];
+        if(input('?get.store_name')){
+            $storeName = input('get.store_name');
+            if(!empty($storeName)){
+                $fStoreLg = new \app\admin\logic\FollowStoreLogic();
+                $storeIds = $fStoreLg->getIdsByName($storeName);
+                if(!empty($storeIds)){
+                    $where['shop_id'] = ['in', $storeIds];
+                }else{
+                    return $logic->getPageList();
+                }
             }
         }
         $data = $logic->getList($where);
